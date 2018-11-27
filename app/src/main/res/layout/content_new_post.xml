@@ -5,22 +5,84 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="50dp"
     android:orientation="vertical"
-    android:background="@android:color/white">
+    android:background="@color/colorGray">
 
-    <TextView
+
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:textColor="@android:color/black"
-        android:text="@string/new_post_your_comment"
-        style="@style/TextViewPrimary"/>
+        android:orientation="horizontal"
+        android:background="@android:color/white"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="15dp">
+
+        <Spinner
+            android:id="@+id/spType"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:entries="@array/typesOfEvent"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@android:color/white"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp">
+
+        <Spinner
+            android:id="@+id/spLevel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:entries="@array/levelOfEvent"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@android:color/white"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp">
+
+        <Spinner
+            android:id="@+id/spMark"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:entries="@array/levelOfEvent"/>
+
+    </LinearLayout>
+
 
     <EditText
         android:id="@+id/edComment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="start"
+
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingStart="8dp"
+        android:background="@android:color/white"
+
+        android:textSize="20sp"
+        android:hint="Your comment..."
+        android:textColorHint="@color/colorGray"
         android:textColor="@android:color/black"
-        android:backgroundTint="@android:color/white"
+
         />
+
+
+
 
 </LinearLayout>

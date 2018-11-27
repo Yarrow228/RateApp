@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -18,50 +18,46 @@
         android:orientation="vertical">
 
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
 
             android:id="@+id/ivUserImage"
 
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-
             android:layout_width="120dp"
             android:layout_height="120dp"
+
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
 
             android:scaleType="centerCrop"
-            app:civ_border_color="@android:color/white"
-            app:civ_border_width="3dp"
-
-
             android:src="@mipmap/ic_launcher"
+            app:civ_border_color="@android:color/white"
+
+
+            app:civ_border_width="3dp"
 
             />
 
         <TextView
             android:id="@+id/tvUserName"
-            android:layout_margin="5dp"
+            style="@style/TextViewPrimary"
 
-            style = "@style/TextViewPrimary"
-            android:textColor = "@android:color/black"
-            android:textSize="35sp"
-            />
+            android:layout_margin="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="35sp" />
 
         <TextView
             android:id="@+id/tvUserSurname"
-            android:layout_margin="5dp"
+            style="@style/TextViewPrimary"
 
-            style = "@style/TextViewPrimary"
-            android:textColor = "@android:color/black"
-            android:textSize="35sp"
-            />
+            android:layout_margin="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="35sp" />
 
 
     </LinearLayout>
-
 
 
     <Button
@@ -72,26 +68,25 @@
         android:layout_marginRight="10dp"
 
         android:background="@color/colorPrimary"
-        android:textAppearance="@android:style/TextAppearance"
-        android:textColor="@android:color/white"
         android:text="@string/main_new_post"
-        />
+        android:textAppearance="@android:style/TextAppearance"
+        android:textColor="@android:color/white" />
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rcPostsList"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".MainActivity"
+        android:id="@+id/rcPostsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
         android:padding="8dp"
-        android:clipToPadding="false">
+        tools:context=".MainActivity">
 
     </android.support.v7.widget.RecyclerView>
 
 
-
-
 </LinearLayout>
+
+
+

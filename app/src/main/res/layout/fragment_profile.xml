@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.ProfileFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorGray"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".MainActivity">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:elevation="8dp">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+
+                android:id="@+id/ivUserImage"
+
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_launcher"
+                app:civ_border_color="@color/colorPrimary"
+                app:civ_border_width="3dp"
+                />
+
+            <TextView
+                android:id="@+id/tvUserName"
+                style="@style/TextViewPrimary"
+
+                android:gravity="start"
+                android:layout_marginLeft="20dp"
+
+                android:text="Name"
+                android:textColor="@android:color/black"
+                android:textSize="35sp" />
+
+            <TextView
+                android:id="@+id/tvUserSurname"
+                style="@style/TextViewPrimary"
+
+                android:gravity="start"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="5dp"
+
+                android:text="Surname"
+                android:textColor="@android:color/black"
+                android:textSize="35sp" />
+
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btnNewPost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+
+            android:elevation="8dp"
+            android:background="@android:color/white"
+            android:text="@string/main_new_post"
+            android:textColor="@color/colorPrimary"
+            android:textSize="15sp"
+            />
+
+
+        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/rcPostsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="8dp"
+            tools:context=".MainActivity">
+
+        </android.support.v7.widget.RecyclerView>
+
+
+    </LinearLayout>
+
+
+</FrameLayout>

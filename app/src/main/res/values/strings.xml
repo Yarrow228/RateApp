@@ -29,5 +29,27 @@
     <string name="new_post_check_item">Item1</string>
     <string name="new_post_back_item">Item2</string>
 
+    <string-array name="typesOfEvent">
+        <item>Choose type of event</item>
+        <item>Competition</item>
+        <item>Mark</item>
+    </string-array>
+
+    <string-array name="levelOfEvent">
+        <item>Choose level of event</item>
+        <item>School</item>
+        <item>District</item>
+        <item>Region</item>
+        <item>Republic</item>
+    </string-array>
+
+    <string-array name="markOfEvent">
+        <item>Choose mark</item>
+        <item>10</item>
+        <item>9</item>
+        <item>8</item>
+        <item>7</item>
+        <item>6</item>
+    </string-array>
 
 </resources>

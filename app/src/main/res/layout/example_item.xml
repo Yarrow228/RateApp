@@ -7,11 +7,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
 
-    card_view:cardBackgroundColor="@color/colorPrimary"
-    card_view:cardCornerRadius="4dp"
+
+    card_view:cardBackgroundColor="@android:color/white"
+
     card_view:cardElevation="5dp">
 
     <LinearLayout
@@ -31,7 +30,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:textColor="@android:color/white"
+
+                android:text="25.11.2018"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="15sp"
                 />
 
@@ -40,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="@string/main_item_card_comma"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="20sp"
                 />
 
@@ -49,7 +50,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:textColor="@android:color/white"
+                android:text="15:30"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="15sp"
                 />
 
@@ -62,7 +64,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:textColor="@android:color/white"
+            android:text="New achievement"
+            android:textColor="@android:color/black"
             android:textSize="20sp"
             />
 
@@ -71,7 +74,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:textColor="@android:color/white"
+            android:text="10"
+            android:textColor="@android:color/black"
             android:textSize="20sp"
             />
 
