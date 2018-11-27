@@ -19,4 +19,15 @@
     <string name="sign_up_password">Enter your password</string>
     <string name="sign_up_passwordConfirm">Confirm your password</string>
 
+
+    <string name="main_new_post">New post</string>
+    <string name="main_delete_post">Delete post</string>
+    <string name="main_item_card_comma">, </string>
+
+    <string name="new_post_label">New post</string>
+    <string name="new_post_your_comment">Your comment:</string>
+    <string name="new_post_check_item">Item1</string>
+    <string name="new_post_back_item">Item2</string>
+
+
 </resources>

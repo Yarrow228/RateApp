@@ -11,17 +11,19 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class StartActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
-
+    private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     // UI references.
     private EditText mEmail, mPassword;
     private Button btnSignIn, btnSignUp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,7 @@ public class StartActivity extends AppCompatActivity {
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
 
 
-
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -60,6 +62,7 @@ public class StartActivity extends AppCompatActivity {
                 String email = mEmail.getText().toString();
                 String pass = mPassword.getText().toString();
                 if(!email.equals("") && !pass.equals("")){
+
                     mAuth.signInWithEmailAndPassword(email,pass);
                 }else{
                     toastMessage("You didn't fill in all the fields.");
@@ -90,7 +93,6 @@ public class StartActivity extends AppCompatActivity {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
-
 
     // function for quick toasting:)
     private void toastMessage(String message){
