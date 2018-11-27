@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1077210209683",
+    "firebase_url": "https://rateapp-f5323.firebaseio.com",
+    "project_id": "rateapp-f5323",
+    "storage_bucket": "rateapp-f5323.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1077210209683:android:268d357a35eb3b1f",
+        "android_client_info": {
+          "package_name": "com.bite.rateapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1077210209683-55id41v7b2od3vn37eq3pf2grqebdbr0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bite.rateapp",
+            "certificate_hash": "6ac6614f63722c697b8630ee5e1049ea94ecde55"
+          }
+        },
+        {
+          "client_id": "1077210209683-rdd6nos2a9srd0hlttmsnbper52bm176.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmkIt1iMv-MzIUgD2eVUcCXA5V-D2lZuA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1077210209683-rdd6nos2a9srd0hlttmsnbper52bm176.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
