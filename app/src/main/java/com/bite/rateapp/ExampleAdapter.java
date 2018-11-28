@@ -20,6 +20,10 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         public TextView mPostComment;
         public TextView mPostMark;
         public TextView mPostTime;
+        public TextView mPostTypeOfEvent;
+        public TextView mPostLevelofEvent;
+
+
 
         public ExampleViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -28,6 +32,9 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
             mPostComment = itemView.findViewById(R.id.postComment);
             mPostMark = itemView.findViewById(R.id.postMark);
             mPostTime = itemView.findViewById(R.id.postTime);
+
+            mPostTypeOfEvent = itemView.findViewById(R.id.postMarkOrComp);
+            mPostLevelofEvent = itemView.findViewById(R.id.postLevelOfEvent);
         }
     }
 
@@ -39,7 +46,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
     @NonNull
     @Override
     public ExampleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.example_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.profile_item, parent, false);
         ExampleViewHolder evh = new ExampleViewHolder(v);
         return evh;
     }
@@ -52,6 +59,10 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         holder.mPostComment.setText(currentItem.getmPostComment());
         holder.mPostMark.setText(currentItem.getmPostMark());
         holder.mPostTime.setText(currentItem.getmPostTime());
+        holder.mPostTypeOfEvent.setText(currentItem.getmPostTypeOfEvent());
+        holder.mPostLevelofEvent.setText(currentItem.getmPostLevelOfEvent());
+
+
 
     }
 

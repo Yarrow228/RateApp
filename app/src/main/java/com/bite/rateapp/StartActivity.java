@@ -94,6 +94,12 @@ public class StartActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+    }
+
     // function for quick toasting:)
     private void toastMessage(String message){
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();

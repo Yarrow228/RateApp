@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,7 +31,14 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
     final Random random = new Random();
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
+
     private EditText edComment;
+    private Spinner typeOfEvent, levelOfEvent, markOfEvent;
+
+    private boolean levelOfEventbool = false;
+    private boolean markOfEventbool = false;
+
+    private int typePos, markPos, levelPos;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,26 +49,46 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
 
-        Spinner typeOfevent = findViewById(R.id.spType);
+        typeOfEvent = (Spinner) findViewById(R.id.spType);
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.typesOfEvent, android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        typeOfevent.setAdapter(adapter1);
-        typeOfevent.setOnItemSelectedListener(this);
+        typeOfEvent.setAdapter(adapter1);
+        typeOfEvent.setOnItemSelectedListener(this);
 
-        typeOfevent.setEnabled(false);
 
-        Spinner levelOfEvent = findViewById(R.id.spLevel);
+        levelOfEvent = (Spinner) findViewById(R.id.spLevel);
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.levelOfEvent, android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         levelOfEvent.setAdapter(adapter2);
         levelOfEvent.setOnItemSelectedListener(this);
 
-        Spinner markOfEvent = findViewById(R.id.spMark);
+        markOfEvent = (Spinner) findViewById(R.id.spMark);
         ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this, R.array.markOfEvent, android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         markOfEvent.setAdapter(adapter3);
         markOfEvent.setOnItemSelectedListener(this);
 
+
+
+        /*
+        TextView textView = (TextView)typeOfEvent.getSelectedView();
+        String result = textView.getText().toString();
+        toastMessage(result);
+        */
+
+
+
+       /*
+        if(!levelOfEvent.getSelectedItem().toString().equals("Choose level of event") && levelOfEventbool == true){
+            //level = levelOfEvent.getSelectedItem().toString();
+            toastMessage("level");
+        }
+
+        if(!markOfEvent.getSelectedItem().toString().equals("Choose mark") && markOfEventbool == true){
+            //mark = markOfEvent.getSelectedItem().toString();
+            toastMessage("mark");
+        }
+        */
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.new_post_toolbar);
@@ -93,12 +121,29 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
                     FirebaseUser user = mAuth.getCurrentUser();
 
+                    toastMessage(Integer.toString(typePos));
+
+                    if (typePos == 1){  //Competition
+
+                        toastMessage(levelOfEvent.getItemAtPosition(levelPos).toString());
+                        mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("typeOfEvent").setValue("competition");
+                        mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("levelOfEvent").setValue(levelOfEvent.getItemAtPosition(levelPos).toString());
+                    }
+                    if (typePos == 2){
+
+                        toastMessage(markOfEvent.getItemAtPosition(markPos).toString());
+                        mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("typeOfEvent").setValue("mark");
+                        mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("markOfEvent").setValue(markOfEvent.getItemAtPosition(markPos).toString());
+                    }
+
+
                     mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("date").setValue(strDate.replace("/","."));
                     mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("time").setValue(strTime);
                     mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("comment").setValue(comment);
-                    mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("mark").setValue(strTime);
+                    mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("rateMark").setValue("rateMark");
 
-                    startActivity(new Intent(PostActivity.this, MainActivity.class));
+
+                    //startActivity(new Intent(PostActivity.this, MainActivity.class));
                 }else{
                     toastMessage("Write your comment");
                 }
@@ -113,7 +158,44 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            toastMessage(parent.getItemAtPosition(position).toString());
+
+
+        //toastMessage(parent.getItemAtPosition(position).toString());
+
+        if(parent.getItemAtPosition(position).toString().equals("Choose type of event")){
+            markOfEvent.setEnabled(false);
+            levelOfEvent.setEnabled(false);
+            //markOfEventbool = false;
+            //levelOfEventbool = false;
+        }
+        if(parent.getItemAtPosition(position).toString().equals("Competition")){
+            markOfEvent.setEnabled(false);
+            levelOfEvent.setEnabled(true);
+            //markOfEventbool = true;
+            //levelOfEventbool = false;
+        }
+        if(parent.getItemAtPosition(position).toString().equals("Mark")){
+            levelOfEvent.setEnabled(false);
+            markOfEvent.setEnabled(true);
+            //markOfEventbool = false;
+            //levelOfEventbool = true;
+
+        }
+
+
+
+        if (levelOfEvent.isEnabled()){
+            typePos = typeOfEvent.getSelectedItemPosition();
+            levelPos = levelOfEvent.getSelectedItemPosition();
+            toastMessage("level " + Integer.toString(levelPos));
+
+        }
+
+        if (markOfEvent.isEnabled()){
+            typePos = typeOfEvent.getSelectedItemPosition();
+            markPos = markOfEvent.getSelectedItemPosition();
+            toastMessage("mark " + Integer.toString(markPos));
+        }
     }
 
     @Override

@@ -7,12 +7,19 @@ public class ExampleItem {
     private String mPostMark;
     private String mPostTime;
 
+    private String mPostTypeOfEvent;
+    private String mPostLevelOfEvent;
 
-    public ExampleItem(String postDate, String postTime, String postComment, String postMark){
+
+
+    public ExampleItem(String postDate, String postTime, String postComment, String postMark, String postTypeOfEvent, String postLevelOfEvent){
         mPostDate = postDate;
         mPostComment = postComment;
         mPostMark = postMark;
         mPostTime = postTime;
+
+        mPostLevelOfEvent = postLevelOfEvent;
+        mPostTypeOfEvent = postTypeOfEvent;
 
     }
 
@@ -31,4 +38,13 @@ public class ExampleItem {
     public String getmPostTime() {
         return mPostTime;
     }
+
+    public String getmPostTypeOfEvent() {
+        return mPostTypeOfEvent;
+    }
+
+    public String getmPostLevelOfEvent() {
+        return mPostLevelOfEvent;
+    }
+
 }

@@ -192,9 +192,20 @@ public class ProfileFragment extends Fragment {
 
 
                 for(DataSnapshot dsp : dataSnapshot.getChildren()){
-                    if(!dsp.child("date").getValue().toString().equals("date")){
-                        mExampleList.add(position, new ExampleItem(dsp.child("date").getValue().toString(), dsp.child("time").getValue().toString(), dsp.child("comment").getValue().toString(), dsp.child("mark").getValue().toString()));
-                        position += 1;
+                    if(!dsp.child("date").getValue().toString().equals("date")) {
+
+
+                        if (dsp.child("typeOfEvent").getValue().toString().equals("competition")) {
+                            mExampleList.add(position, new ExampleItem(dsp.child("date").getValue().toString(), dsp.child("time").getValue().toString(), dsp.child("comment").getValue().toString(), dsp.child("rateMark").getValue().toString(), dsp.child("typeOfEvent").getValue().toString(), dsp.child("levelOfEvent").getValue().toString()));
+                            position += 1;
+
+                        }
+
+                        if (dsp.child("typeOfEvent").getValue().toString().equals("mark")) {
+                            mExampleList.add(position, new ExampleItem(dsp.child("date").getValue().toString(), dsp.child("time").getValue().toString(), dsp.child("comment").getValue().toString(), dsp.child("rateMark").getValue().toString(), dsp.child("typeOfEvent").getValue().toString(), dsp.child("markOfEvent").getValue().toString()));
+                            position += 1;
+                        }
+
                     }
                 }
 
