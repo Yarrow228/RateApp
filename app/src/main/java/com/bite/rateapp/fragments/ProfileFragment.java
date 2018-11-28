@@ -1,10 +1,8 @@
 package com.bite.rateapp.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,17 +10,14 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bite.rateapp.ExampleAdapter;
-import com.bite.rateapp.ExampleItem;
-import com.bite.rateapp.MainActivity;
+import com.bite.rateapp.ProfileItemAdapter;
+import com.bite.rateapp.ProfileItem;
 import com.bite.rateapp.PostActivity;
 import com.bite.rateapp.R;
 import com.bite.rateapp.UserInfUtil;
@@ -58,7 +53,7 @@ public class ProfileFragment extends Fragment {
 
     //For Recycler View
 
-    private ArrayList<ExampleItem> mExampleList;
+    private ArrayList<ProfileItem> mExampleList;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -75,11 +70,13 @@ public class ProfileFragment extends Fragment {
         tvName = (TextView) view.findViewById(R.id.tvUserName);
         tvSurname = (TextView) view.findViewById(R.id.tvUserSurname);
         btnNewPost = (Button) view.findViewById(R.id.btnNewPost);
+
         mRecyclerView = view.findViewById(R.id.rcPostsList);
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
+
         FirebaseUser user = mAuth.getCurrentUser();
         loadAndSaveUserInfo(user.getUid());
         loadUserAchievements();
@@ -117,7 +114,7 @@ public class ProfileFragment extends Fragment {
 
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
-        mAdapter = new ExampleAdapter(mExampleList);
+        mAdapter = new ProfileItemAdapter(mExampleList);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -196,13 +193,13 @@ public class ProfileFragment extends Fragment {
 
 
                         if (dsp.child("typeOfEvent").getValue().toString().equals("competition")) {
-                            mExampleList.add(position, new ExampleItem(dsp.child("date").getValue().toString(), dsp.child("time").getValue().toString(), dsp.child("comment").getValue().toString(), dsp.child("rateMark").getValue().toString(), dsp.child("typeOfEvent").getValue().toString(), dsp.child("levelOfEvent").getValue().toString()));
+                            mExampleList.add(position, new ProfileItem(dsp.child("date").getValue().toString(), dsp.child("time").getValue().toString(), dsp.child("comment").getValue().toString(), dsp.child("rateMark").getValue().toString(), dsp.child("typeOfEvent").getValue().toString(), dsp.child("levelOfEvent").getValue().toString()));
                             position += 1;
 
                         }
 
                         if (dsp.child("typeOfEvent").getValue().toString().equals("mark")) {
-                            mExampleList.add(position, new ExampleItem(dsp.child("date").getValue().toString(), dsp.child("time").getValue().toString(), dsp.child("comment").getValue().toString(), dsp.child("rateMark").getValue().toString(), dsp.child("typeOfEvent").getValue().toString(), dsp.child("markOfEvent").getValue().toString()));
+                            mExampleList.add(position, new ProfileItem(dsp.child("date").getValue().toString(), dsp.child("time").getValue().toString(), dsp.child("comment").getValue().toString(), dsp.child("rateMark").getValue().toString(), dsp.child("typeOfEvent").getValue().toString(), dsp.child("markOfEvent").getValue().toString()));
                             position += 1;
                         }
 

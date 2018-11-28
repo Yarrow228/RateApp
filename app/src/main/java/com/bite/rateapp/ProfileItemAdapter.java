@@ -9,9 +9,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleViewHolder> {
+public class ProfileItemAdapter extends RecyclerView.Adapter<ProfileItemAdapter.ExampleViewHolder> {
 
-    private ArrayList<ExampleItem> mExampleList;
+    private ArrayList<ProfileItem> mExampleList;
 
 
     public static class ExampleViewHolder extends RecyclerView.ViewHolder{
@@ -38,7 +38,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         }
     }
 
-    public ExampleAdapter(ArrayList<ExampleItem> exampleList){
+    public ProfileItemAdapter(ArrayList<ProfileItem> exampleList){
         mExampleList = exampleList;
     }
 
@@ -53,7 +53,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
 
     @Override
     public void onBindViewHolder(@NonNull ExampleViewHolder holder, int position) {
-        ExampleItem currentItem = mExampleList.get(position);
+        ProfileItem currentItem = mExampleList.get(position);
 
         holder.mPostDate.setText(currentItem.getmPostDate());
         holder.mPostComment.setText(currentItem.getmPostComment());
@@ -61,8 +61,6 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         holder.mPostTime.setText(currentItem.getmPostTime());
         holder.mPostTypeOfEvent.setText(currentItem.getmPostTypeOfEvent());
         holder.mPostLevelofEvent.setText(currentItem.getmPostLevelOfEvent());
-
-
 
     }
 

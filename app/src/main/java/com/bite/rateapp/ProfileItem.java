@@ -1,6 +1,6 @@
 package com.bite.rateapp;
 
-public class ExampleItem {
+public class ProfileItem {
 
     private String mPostDate;
     private String mPostComment;
@@ -12,7 +12,7 @@ public class ExampleItem {
 
 
 
-    public ExampleItem(String postDate, String postTime, String postComment, String postMark, String postTypeOfEvent, String postLevelOfEvent){
+    public ProfileItem(String postDate, String postTime, String postComment, String postMark, String postTypeOfEvent, String postLevelOfEvent){
         mPostDate = postDate;
         mPostComment = postComment;
         mPostMark = postMark;
