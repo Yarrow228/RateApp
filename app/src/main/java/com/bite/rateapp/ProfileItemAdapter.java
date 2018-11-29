@@ -21,8 +21,7 @@ public class ProfileItemAdapter extends RecyclerView.Adapter<ProfileItemAdapter.
         public TextView mPostMark;
         public TextView mPostTime;
         public TextView mPostTypeOfEvent;
-        public TextView mPostLevelofEvent;
-
+        public TextView mPostLevelOfEvent;
 
 
         public ExampleViewHolder(@NonNull View itemView) {
@@ -34,7 +33,8 @@ public class ProfileItemAdapter extends RecyclerView.Adapter<ProfileItemAdapter.
             mPostTime = itemView.findViewById(R.id.postTime);
 
             mPostTypeOfEvent = itemView.findViewById(R.id.postMarkOrComp);
-            mPostLevelofEvent = itemView.findViewById(R.id.postLevelOfEvent);
+            mPostLevelOfEvent = itemView.findViewById(R.id.postLevelOfEvent);
+
         }
     }
 
@@ -57,10 +57,10 @@ public class ProfileItemAdapter extends RecyclerView.Adapter<ProfileItemAdapter.
 
         holder.mPostDate.setText(currentItem.getmPostDate());
         holder.mPostComment.setText(currentItem.getmPostComment());
-        holder.mPostMark.setText(currentItem.getmPostMark());
+        holder.mPostMark.setText("+" + currentItem.getmPostMark());
         holder.mPostTime.setText(currentItem.getmPostTime());
         holder.mPostTypeOfEvent.setText(currentItem.getmPostTypeOfEvent());
-        holder.mPostLevelofEvent.setText(currentItem.getmPostLevelOfEvent());
+        holder.mPostLevelOfEvent.setText(currentItem.getmPostLevelOfEvent());
 
     }
 

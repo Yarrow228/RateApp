@@ -127,7 +127,7 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
                         toastMessage(levelOfEvent.getItemAtPosition(levelPos).toString());
                         mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("typeOfEvent").setValue("competition");
-                        mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("levelOfEvent").setValue(levelOfEvent.getItemAtPosition(levelPos).toString());
+                        mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("levelOfEvent").setValue(levelOfEvent.getItemAtPosition(levelPos).toString().toLowerCase());
                     }
                     if (typePos == 2){
 
@@ -141,6 +141,8 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
                     mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("time").setValue(strTime);
                     mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("comment").setValue(comment);
                     mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("rateMark").setValue("rateMark");
+                    mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("confirmed").setValue("0");
+
 
 
                     //startActivity(new Intent(PostActivity.this, MainActivity.class));

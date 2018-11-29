@@ -29,7 +29,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class ProfileFragment extends Fragment {
@@ -39,7 +43,7 @@ public class ProfileFragment extends Fragment {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
 
-    private TextView tvName, tvSurname, tvEmail;
+    private TextView tvName, tvSurname, tvEmail, tvRating;
     private Button btnNewPost, btnDeletePost;
 
     //For Shared Preferences(get and save data)
@@ -57,7 +61,7 @@ public class ProfileFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
+    private int rating = 0;
 
 
     @Nullable
@@ -67,9 +71,14 @@ public class ProfileFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        tvRating = (TextView) view.findViewById(R.id.tvUserRating);
         tvName = (TextView) view.findViewById(R.id.tvUserName);
         tvSurname = (TextView) view.findViewById(R.id.tvUserSurname);
         btnNewPost = (Button) view.findViewById(R.id.btnNewPost);
+
+
+        sharedPrefs = getActivity().getSharedPreferences(PREF, Context.MODE_PRIVATE);
+
 
         mRecyclerView = view.findViewById(R.id.rcPostsList);
 
@@ -77,12 +86,16 @@ public class ProfileFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
+        
         FirebaseUser user = mAuth.getCurrentUser();
         loadAndSaveUserInfo(user.getUid());
         loadUserAchievements();
 
+
+
+
         //Showing name and surname
-        sharedPrefs = getActivity().getSharedPreferences(PREF, Context.MODE_PRIVATE);
+
         //tvEmail.setText(sharedPrefs.getString(EMAIL_PREF,""));
         tvName.setText(sharedPrefs.getString(NAME_PREF,"None")); //
         tvSurname.setText(sharedPrefs.getString(SURNAME_PREF, "None"));
@@ -166,6 +179,7 @@ public class ProfileFragment extends Fragment {
                 ed.putString(NAME_PREF, uInfo.getName());
                 ed.putString(SURNAME_PREF, uInfo.getSurname());
                 ed.putString(EMAIL_PREF, uInfo.getEmail());
+                ed.putString(STATUS_PREF, uInfo.getStatus());
                 ed.apply();
 
             }
@@ -179,33 +193,95 @@ public class ProfileFragment extends Fragment {
 
     private void loadUserAchievements(){
 
-        FirebaseUser user = mAuth.getCurrentUser();
 
-        mDatabase.child("Users").child(user.getUid()).child("achievements").addValueEventListener(new ValueEventListener() {
+
+
+        mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+
                 int position = 0;
+                FirebaseUser user = mAuth.getCurrentUser();
+
+                for(DataSnapshot dsp : dataSnapshot.child("Users").child(user.getUid()).child("achievements").getChildren()){
+
+                    String date = dsp.child("date").getValue().toString();
+
+                    if(!date.equals("date")) {
+
+                        String typeOfEvent = dsp.child("typeOfEvent").getValue().toString();
+                        String timeOfPost = dsp.child("time").getValue().toString();
 
 
-                for(DataSnapshot dsp : dataSnapshot.getChildren()){
-                    if(!dsp.child("date").getValue().toString().equals("date")) {
+
+                        if (typeOfEvent.equals("competition")) {
 
 
-                        if (dsp.child("typeOfEvent").getValue().toString().equals("competition")) {
-                            mExampleList.add(position, new ProfileItem(dsp.child("date").getValue().toString(), dsp.child("time").getValue().toString(), dsp.child("comment").getValue().toString(), dsp.child("rateMark").getValue().toString(), dsp.child("typeOfEvent").getValue().toString(), dsp.child("levelOfEvent").getValue().toString()));
+
+                            String levelOfEvent = dsp.child("levelOfEvent").getValue().toString();
+                            String reward = dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).getValue().toString();
+
+                            mExampleList.add(position, new ProfileItem(date, timeOfPost, dsp.child("comment").getValue().toString(), reward, typeOfEvent, levelOfEvent));
                             position += 1;
 
+
+
+                            //Check if its confirmed and not out of time
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy");
+                            String nowDate = simpleDateFormat.format(new Date()).replace("/",".");
+
+                            int preLastNum = Character.getNumericValue(date.charAt(date.length()-2));
+                            int lastNum = Character.getNumericValue(date.charAt(date.length()-1)) + 1;
+                            int num = preLastNum*10 + lastNum;
+
+                            String newDate;
+                            if(num < 10){
+                                newDate = date.substring(0, date.length()-1) + String.valueOf(num);
+                            }else{
+                                newDate = date.substring(0, date.length()-2) + String.valueOf(num);
+                            }
+
+                            if(!nowDate.equals(newDate) && !dsp.child("confirmed").getValue().toString().equals("0")){
+                                rating += Integer.parseInt(reward);
+                            }
                         }
 
-                        if (dsp.child("typeOfEvent").getValue().toString().equals("mark")) {
-                            mExampleList.add(position, new ProfileItem(dsp.child("date").getValue().toString(), dsp.child("time").getValue().toString(), dsp.child("comment").getValue().toString(), dsp.child("rateMark").getValue().toString(), dsp.child("typeOfEvent").getValue().toString(), dsp.child("markOfEvent").getValue().toString()));
+                        if (typeOfEvent.equals("mark")) {
+
+                            String markOfEvent = dsp.child("markOfEvent").getValue().toString();
+                            String reward = dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(markOfEvent).getValue().toString();
+
+                            mExampleList.add(position, new ProfileItem(date, timeOfPost, dsp.child("comment").getValue().toString(), reward, typeOfEvent, markOfEvent));
                             position += 1;
-                        }
 
+
+
+                            //Check if its confirmed and not out of time
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy");
+                            String nowDate = simpleDateFormat.format(new Date()).replace("/",".");
+
+                            int preLastNum = Character.getNumericValue(date.charAt(date.length()-2));
+                            int lastNum = Character.getNumericValue(date.charAt(date.length()-1)) + 1;
+                            int num = preLastNum*10 + lastNum;
+
+                            String newDate;
+                            if(num < 10){
+                                newDate = date.substring(0, date.length()-1) + String.valueOf(num);
+                            }else{
+                                newDate = date.substring(0, date.length()-2) + String.valueOf(num);
+                            }
+
+                            if(!nowDate.equals(newDate) && !dsp.child("confirmed").getValue().toString().equals("0")){
+                                rating += Integer.parseInt(reward);
+                            }
+                        }
                     }
                 }
 
+
+
+                tvRating.setText(String.valueOf(rating));
                 mAdapter.notifyDataSetChanged();
             }
 
@@ -214,11 +290,6 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-    }
-
-
-    private void showUserData(){
-
     }
 
 
@@ -231,14 +302,9 @@ public class ProfileFragment extends Fragment {
     }
     */
 
-
-
     // just toasts, nothing interesting
     private void toastMessage(String message){
         Toast.makeText(getActivity() ,message,Toast.LENGTH_SHORT).show();
     }
-
-
-
 
 }
