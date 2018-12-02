@@ -79,48 +79,24 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvUserRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-
-                android:text="---"
-                android:textColor="@color/colorPrimary"
-                android:textSize="25sp"
-                />
-
-
 
         </LinearLayout>
 
 
-        <Button
-            android:id="@+id/btnNewPost"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-
-            android:elevation="8dp"
-            android:background="@android:color/white"
-            android:text="@string/main_new_post"
-            android:textColor="@color/colorPrimary"
-            android:textSize="15sp"
-            />
 
         <android.support.v7.widget.RecyclerView
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/rcPostsList"
+            android:id="@+id/rcConfPostsList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
             android:clipToPadding="false"
             android:padding="8dp"
             tools:context=".MainActivity">
 
         </android.support.v7.widget.RecyclerView>
-
 
 
 

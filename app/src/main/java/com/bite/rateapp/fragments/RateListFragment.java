@@ -49,7 +49,6 @@ public class RateListFragment extends Fragment {
 
         createExampleList();
         buildRecyclerView();
-
         loadData();
 
         return view;
@@ -72,15 +71,11 @@ public class RateListFragment extends Fragment {
 
     private void loadData(){
 
-        //mRateList.add(0, new RateItem("Name","Surname","100"));
-
-
-
         mDatabase.child("Users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-
+                //Should check if its a teacher!!!!
 
 
                 int position = 0;

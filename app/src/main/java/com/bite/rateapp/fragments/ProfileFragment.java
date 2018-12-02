@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +18,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bite.rateapp.ConfItem;
+import com.bite.rateapp.ConfItemAdapter;
 import com.bite.rateapp.ProfileItemAdapter;
 import com.bite.rateapp.ProfileItem;
 import com.bite.rateapp.PostActivity;
@@ -64,59 +68,151 @@ public class ProfileFragment extends Fragment {
     private int rating = 0;
 
 
+    //For teacher account
+    private ArrayList<ConfItem> mConfList;
+    private RecyclerView mConfRecyclerView;
+    private ConfItemAdapter mConfAdapter;
+    private RecyclerView.LayoutManager mConfLayoutManager;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        sharedPrefs = getActivity().getSharedPreferences(PREF, Context.MODE_PRIVATE);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        //FirebaseUser user = mAuth.getCurrentUser();
+
+    }
+
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
-
-        tvRating = (TextView) view.findViewById(R.id.tvUserRating);
-        tvName = (TextView) view.findViewById(R.id.tvUserName);
-        tvSurname = (TextView) view.findViewById(R.id.tvUserSurname);
-        btnNewPost = (Button) view.findViewById(R.id.btnNewPost);
-
-
-        sharedPrefs = getActivity().getSharedPreferences(PREF, Context.MODE_PRIVATE);
-
-
-        mRecyclerView = view.findViewById(R.id.rcPostsList);
-
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mAuth = FirebaseAuth.getInstance();
-
-        
         FirebaseUser user = mAuth.getCurrentUser();
-        loadAndSaveUserInfo(user.getUid());
-        loadUserAchievements();
+
+
+        checkStatus(user.getUid());
+
+
+        toastMessage(sharedPrefs.getString(STATUS_PREF, ""));
+
+
+        if (sharedPrefs.getString(STATUS_PREF, "").equals("")){
+            refreshFragment(container);
+
+        }
+
+        if (sharedPrefs.getString(STATUS_PREF, "").equals("0")){
+            View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+            tvRating = (TextView) view.findViewById(R.id.tvUserRating);
+            tvName = (TextView) view.findViewById(R.id.tvUserName);
+            tvSurname = (TextView) view.findViewById(R.id.tvUserSurname);
+            btnNewPost = (Button) view.findViewById(R.id.btnNewPost);
+
+
+            //Showing name and surname
+            loadAndSaveUserInfo(user.getUid());
+            tvName.setText(sharedPrefs.getString(NAME_PREF,"None")); //
+            tvSurname.setText(sharedPrefs.getString(SURNAME_PREF, "None"));
+
+
+            mRecyclerView = view.findViewById(R.id.rcPostsList);
+            //Showing student achievements
+            loadUserAchievements();
+            createExampleList();
+            buildRecyclerView();
+
+            btnNewPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Comment for new post
+                    startActivity(new Intent(getActivity(), PostActivity.class));
+                }
+            });
 
 
 
+            //refreshFragment(container);
 
-        //Showing name and surname
+            return view;
+        }
 
-        //tvEmail.setText(sharedPrefs.getString(EMAIL_PREF,""));
-        tvName.setText(sharedPrefs.getString(NAME_PREF,"None")); //
-        tvSurname.setText(sharedPrefs.getString(SURNAME_PREF, "None"));
+        if (sharedPrefs.getString(STATUS_PREF,"").equals("1")){
+            View view = inflater.inflate(R.layout.fragment_profile_teacher, container, false);
 
-        createExampleList();
-        buildRecyclerView();
+            tvName = (TextView) view.findViewById(R.id.tvUserName);
+            tvSurname = (TextView) view.findViewById(R.id.tvUserSurname);
+
+            //Showing name and surname
+            loadAndSaveUserInfo(user.getUid());
+            tvName.setText(sharedPrefs.getString(NAME_PREF,"None")); //
+            tvSurname.setText(sharedPrefs.getString(SURNAME_PREF, "None"));
 
 
-        btnNewPost.setOnClickListener(new View.OnClickListener() {
+            mConfRecyclerView = view.findViewById(R.id.rcConfPostsList);
+            loadNotConfirmedAchievements();
+            createConfList();
+            buildConfList();
+
+            //refreshFragment(container);
+
+            return view;
+        }
+
+        //refreshFragment(container);
+
+
+
+        return null;
+    }
+
+
+    //check user status
+    private void checkStatus(String userId){
+
+
+
+        mDatabase.child("Users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                //Comment for new post
-                startActivity(new Intent(getActivity(), PostActivity.class));
-                //((Activity) getActivity()).overridePendingTransition(0,0);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                UserInfUtil uInfo = new UserInfUtil();
+                uInfo.setStatus(dataSnapshot.child("status").getValue().toString());
+
+                toastMessage("LOL");
+
+                sharedPrefs =  getActivity().getSharedPreferences(PREF, Context.MODE_PRIVATE);
+                ed = sharedPrefs.edit();
+
+                ed.putString(STATUS_PREF, uInfo.getStatus());
+                ed.apply();
             }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
 
 
-        return view;
+
     }
 
+    private void refreshFragment(ViewGroup container){
+
+        //Refresh fragment
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = manager.beginTransaction();
+        Fragment newFragment = this;
+        this.onDestroy();
+        fragmentTransaction.replace(container.getId(), newFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+
+    }
 
     //createExampleList and buildRecycler view is for recycler view
     public void createExampleList(){
@@ -133,36 +229,37 @@ public class ProfileFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    /*
-    //onCreateOptionsMenu and onOptionsItemSelected is for toolbar
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getActivity().getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+
+
+    //For status 1("teacher") list if achievements
+    private void createConfList(){
+        mConfList = new ArrayList<>();
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+    private void buildConfList(){
 
-        int id = item.getItemId();
+        mConfRecyclerView.setHasFixedSize(true);
+        mConfLayoutManager = new LinearLayoutManager(getActivity());
+        mConfAdapter = new ConfItemAdapter(mConfList);
 
-        //noinspection SimplifiableIfStatement
+        mConfRecyclerView.setLayoutManager(mConfLayoutManager);
+        mConfRecyclerView.setAdapter(mConfAdapter);
 
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
-        return super.onOptionsItemSelected(item);
+        mConfAdapter.setOnItemClickListener(new ConfItemAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                mConfList.get(position);
+                toastMessage("Its work");
+            }
+        });
     }
-    */
-
-    private void loadAndSaveUserInfo(String userID){
 
 
-        mDatabase.child("Users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+    private void loadAndSaveUserInfo(String userId){
+
+        mDatabase.child("Users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -193,9 +290,6 @@ public class ProfileFragment extends Fragment {
 
     private void loadUserAchievements(){
 
-
-
-
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -213,11 +307,7 @@ public class ProfileFragment extends Fragment {
                         String typeOfEvent = dsp.child("typeOfEvent").getValue().toString();
                         String timeOfPost = dsp.child("time").getValue().toString();
 
-
-
                         if (typeOfEvent.equals("competition")) {
-
-
 
                             String levelOfEvent = dsp.child("levelOfEvent").getValue().toString();
                             String reward = dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).getValue().toString();
@@ -290,6 +380,73 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+    }
+
+
+    private void loadNotConfirmedAchievements(){
+
+        mDatabase.child("Users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                int position = 0;
+
+                for(DataSnapshot dsp : dataSnapshot.getChildren()){
+
+                    if (!dsp.child("status").equals("1")){
+
+
+                        for (DataSnapshot insideDsp : dsp.child("achievements").getChildren()){
+
+                            if (!insideDsp.child("date").getValue().toString().equals("date")){
+                                if (insideDsp.child("confirmed").getValue().toString().equals("0")){
+
+                                    String name = dsp.child("name").getValue().toString();
+                                    String surname = dsp.child("surname").getValue().toString();
+                                    String date = insideDsp.child("date").getValue().toString();
+                                    String time = insideDsp.child("time").getValue().toString();
+                                    String comment = insideDsp.child("comment").getValue().toString();
+                                    String type = insideDsp.child("typeOfEvent").getValue().toString();
+
+
+                                    if(type.equals("competition")){
+
+                                        String level = insideDsp.child("levelOfEvent").getValue().toString();
+                                        mConfList.add(position, new ConfItem(name, surname, date, time, comment, type, level));
+                                        position += 1;
+                                    }
+
+                                    if(type.equals("mark")){
+
+                                        String level = insideDsp.child("markOfEvent").getValue().toString();
+                                        mConfList.add(position, new ConfItem(name, surname, date, time, comment, type, level));
+                                        position += 1;
+                                    }
+
+
+                                }
+                            }
+                        }
+                    }
+                }
+
+                mConfAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
+
+
+
+
     }
 
 
