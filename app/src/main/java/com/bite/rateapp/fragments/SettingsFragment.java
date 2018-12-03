@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.bite.rateapp.MainActivity;
 import com.bite.rateapp.R;
 import com.bite.rateapp.StartActivity;
 import com.bite.rateapp.UserInfUtil;

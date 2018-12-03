@@ -82,8 +82,6 @@ public class ProfileFragment extends Fragment {
         sharedPrefs = getActivity().getSharedPreferences(PREF, Context.MODE_PRIVATE);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
-        //FirebaseUser user = mAuth.getCurrentUser();
-
     }
 
 
@@ -94,34 +92,38 @@ public class ProfileFragment extends Fragment {
 
         FirebaseUser user = mAuth.getCurrentUser();
 
-
         checkStatus(user.getUid());
+
+
+
+        View view = inflater.inflate(R.layout.fragment_frofile_flexible, container, false);
+
+
+        tvName = (TextView) view.findViewById(R.id.tvUserName);
+        tvSurname = (TextView) view.findViewById(R.id.tvUserSurname);
+        tvRating = (TextView) view.findViewById(R.id.tvUserRating);
+        btnNewPost = (Button) view.findViewById(R.id.btnNewPost);
+
+        mRecyclerView = view.findViewById(R.id.rcPostsList);
+        mConfRecyclerView = view.findViewById(R.id.rcConfPostsList);
+
+
+        //Showing name and surname
+        loadAndSaveUserInfo(user.getUid());
+        tvName.setText(sharedPrefs.getString(NAME_PREF,"None")); //
+        tvSurname.setText(sharedPrefs.getString(SURNAME_PREF, "None"));
+
 
 
         toastMessage(sharedPrefs.getString(STATUS_PREF, ""));
 
 
-        if (sharedPrefs.getString(STATUS_PREF, "").equals("")){
-            refreshFragment(container);
-
-        }
-
+        //Student view
         if (sharedPrefs.getString(STATUS_PREF, "").equals("0")){
-            View view = inflater.inflate(R.layout.fragment_profile, container, false);
-
-            tvRating = (TextView) view.findViewById(R.id.tvUserRating);
-            tvName = (TextView) view.findViewById(R.id.tvUserName);
-            tvSurname = (TextView) view.findViewById(R.id.tvUserSurname);
-            btnNewPost = (Button) view.findViewById(R.id.btnNewPost);
 
 
-            //Showing name and surname
-            loadAndSaveUserInfo(user.getUid());
-            tvName.setText(sharedPrefs.getString(NAME_PREF,"None")); //
-            tvSurname.setText(sharedPrefs.getString(SURNAME_PREF, "None"));
+            mConfRecyclerView.setVisibility(View.GONE);
 
-
-            mRecyclerView = view.findViewById(R.id.rcPostsList);
             //Showing student achievements
             loadUserAchievements();
             createExampleList();
@@ -134,48 +136,27 @@ public class ProfileFragment extends Fragment {
                     startActivity(new Intent(getActivity(), PostActivity.class));
                 }
             });
-
-
-
-            //refreshFragment(container);
-
-            return view;
         }
 
+        //Teachers view
         if (sharedPrefs.getString(STATUS_PREF,"").equals("1")){
-            View view = inflater.inflate(R.layout.fragment_profile_teacher, container, false);
 
-            tvName = (TextView) view.findViewById(R.id.tvUserName);
-            tvSurname = (TextView) view.findViewById(R.id.tvUserSurname);
+            mRecyclerView.setVisibility(View.GONE);
+            btnNewPost.setVisibility(View.GONE);
 
-            //Showing name and surname
-            loadAndSaveUserInfo(user.getUid());
-            tvName.setText(sharedPrefs.getString(NAME_PREF,"None")); //
-            tvSurname.setText(sharedPrefs.getString(SURNAME_PREF, "None"));
-
-
-            mConfRecyclerView = view.findViewById(R.id.rcConfPostsList);
             loadNotConfirmedAchievements();
             createConfList();
             buildConfList();
-
-            //refreshFragment(container);
-
-            return view;
         }
 
-        //refreshFragment(container);
+        refreshFragment(container);
 
-
-
-        return null;
+        return view;
     }
 
 
     //check user status
     private void checkStatus(String userId){
-
-
 
         mDatabase.child("Users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -196,10 +177,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
-
-
-
     }
+
 
     private void refreshFragment(ViewGroup container){
 
@@ -213,6 +192,8 @@ public class ProfileFragment extends Fragment {
         fragmentTransaction.commit();
 
     }
+
+
 
     //createExampleList and buildRecycler view is for recycler view
     public void createExampleList(){
@@ -249,13 +230,79 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 mConfList.get(position);
-                toastMessage("Its work");
+            }
+
+            @Override
+            public void onCheckClick(int position) {
+                checkedConfItem(position);
             }
         });
     }
 
 
 
+
+    private void removeConfItem(int position){
+        mConfList.remove(position);
+        mConfAdapter.notifyItemRemoved(position);
+
+
+
+
+    }
+
+
+
+    private void checkedConfItem(final int position){
+
+        ConfItem item = mConfList.get(position);
+
+        final String date = item.getmConfDate();
+        final String time = item.getmConfTime();
+        final String name = item.getmConfName();
+        final String surname = item.getmConfSurname();
+
+        //toastMessage(date);
+        //toastMessage(time);
+
+
+        mDatabase.child("Users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                for(DataSnapshot dsp : dataSnapshot.getChildren()){
+
+                    if(dsp.child("name").getValue().toString().equals(name) && dsp.child("surname").getValue().toString().equals(surname)){
+
+                        for (DataSnapshot inDsp : dsp.child("achievements").getChildren()){
+
+
+                            if(inDsp.child("date").getValue().toString().equals(date) && inDsp.child("time").getValue().toString().equals(time)){
+
+
+                                //toastMessage(inDsp.getKey());
+                                //toastMessage(inDsp.toString());
+
+                                mDatabase.child("Users").child(dsp.getKey()).child("achievements").child(inDsp.getKey()).child("confirmed").setValue(1);
+                                removeConfItem(position);
+                            }
+                        }
+                    }
+                }
+
+                mConfAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    
 
     private void loadAndSaveUserInfo(String userId){
 
@@ -438,15 +485,6 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-
-
-
-
-
-
-
-
-
     }
 
 

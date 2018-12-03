@@ -111,7 +111,7 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
         switch (item.getItemId()){
             case R.id.action_check:
-                if(!TextUtils.isEmpty(comment)){
+                if(!TextUtils.isEmpty(comment) && typePos != 0){
 
                     SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm");
                     String strTime = simpleTimeFormat.format(new Date());
@@ -123,13 +123,35 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
                     toastMessage(Integer.toString(typePos));
 
-                    if (typePos == 1){  //Competition
+
+
+
+
+                    if (levelPos != 0 && levelOfEvent.isEnabled()){  //Competition
+
+
+                        mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("date").setValue(strDate.replace("/","."));
+                        mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("time").setValue(strTime);
+                        mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("comment").setValue(comment);
+                        mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("rateMark").setValue("rateMark");
+                        mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("confirmed").setValue("0");
+
+
 
                         toastMessage(levelOfEvent.getItemAtPosition(levelPos).toString());
                         mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("typeOfEvent").setValue("competition");
                         mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("levelOfEvent").setValue(levelOfEvent.getItemAtPosition(levelPos).toString().toLowerCase());
                     }
-                    if (typePos == 2){
+                    if (markPos != 0 && markOfEvent.isEnabled()){
+
+
+                        mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("date").setValue(strDate.replace("/","."));
+                        mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("time").setValue(strTime);
+                        mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("comment").setValue(comment);
+                        mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("rateMark").setValue("rateMark");
+                        mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("confirmed").setValue("0");
+
+
 
                         toastMessage(markOfEvent.getItemAtPosition(markPos).toString());
                         mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("typeOfEvent").setValue("mark");
@@ -137,11 +159,6 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
                     }
 
 
-                    mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("date").setValue(strDate.replace("/","."));
-                    mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("time").setValue(strTime);
-                    mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("comment").setValue(comment);
-                    mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("rateMark").setValue("rateMark");
-                    mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("confirmed").setValue("0");
 
 
 

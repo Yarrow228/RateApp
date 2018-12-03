@@ -76,12 +76,16 @@ public class RateListFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 //Should check if its a teacher!!!!
+                int rating = 0;
+
+
+
 
 
                 int position = 0;
 
                 for(DataSnapshot dsp : dataSnapshot.getChildren()){
-                    if(!dsp.child("name").getValue().toString().equals("name")) {
+                    if(!dsp.child("name").getValue().toString().equals("name") && !dsp.child("status").getValue().toString().equals("1")) {
 
                         mRateList.add(position, new RateItem(dsp.child("name").getValue().toString(),dsp.child("surname").getValue().toString(),"100"));
                         position += 1;

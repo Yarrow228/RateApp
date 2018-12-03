@@ -18,6 +18,7 @@ public class ConfItemAdapter extends RecyclerView.Adapter<ConfItemAdapter.Exampl
 
     public interface OnItemClickListener{
         void onItemClick(int position);
+        void onCheckClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){mListener = listener;}
@@ -50,6 +51,7 @@ public class ConfItemAdapter extends RecyclerView.Adapter<ConfItemAdapter.Exampl
             mConfComment = itemView.findViewById(R.id.conf_list_card_comment);
             mConfType = itemView.findViewById(R.id.conf_list_cardType);
             mConfLevel = itemView.findViewById(R.id.conf_list_levelEvent);
+            mConfCheck = itemView.findViewById(R.id.conf_check_image);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +62,19 @@ public class ConfItemAdapter extends RecyclerView.Adapter<ConfItemAdapter.Exampl
                         int position = getAdapterPosition();
                         if(position != RecyclerView.NO_POSITION){
                             listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
+
+            mConfCheck.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null){
+
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onCheckClick(position);
                         }
                     }
                 }
