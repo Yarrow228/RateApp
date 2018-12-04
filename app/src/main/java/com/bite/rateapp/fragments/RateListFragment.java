@@ -1,6 +1,7 @@
 package com.bite.rateapp.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bite.rateapp.PostActivity;
+import com.bite.rateapp.ProfileBlankActivity;
 import com.bite.rateapp.ProfileItem;
 import com.bite.rateapp.ProfileItemAdapter;
 import com.bite.rateapp.R;
@@ -30,7 +33,7 @@ public class RateListFragment extends Fragment {
 
     private ArrayList<RateItem> mRateList;
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private RateItemAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
 
@@ -51,6 +54,8 @@ public class RateListFragment extends Fragment {
         buildRecyclerView();
         loadData();
 
+
+
         return view;
     }
 
@@ -67,27 +72,69 @@ public class RateListFragment extends Fragment {
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+        mAdapter.setOnItemClickListener(new RateItemAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                mRateList.get(position);
+                toastMessage(String.valueOf(position));
+
+                rateItemClicked(position);
+            }
+        });
     }
+
+
+
 
     private void loadData(){
 
-        mDatabase.child("Users").addValueEventListener(new ValueEventListener() {
+        mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 //Should check if its a teacher!!!!
-                int rating = 0;
-
-
-
-
-
                 int position = 0;
 
-                for(DataSnapshot dsp : dataSnapshot.getChildren()){
+
+                for(DataSnapshot dsp : dataSnapshot.child("Users").getChildren()){
+
                     if(!dsp.child("name").getValue().toString().equals("name") && !dsp.child("status").getValue().toString().equals("1")) {
 
-                        mRateList.add(position, new RateItem(dsp.child("name").getValue().toString(),dsp.child("surname").getValue().toString(),"100"));
+                        int rating = 0;
+                        String userID = dsp.getKey().toString();
+                        //toastMessage(userID);
+
+                        for (DataSnapshot inDsp : dsp.child("achievements").getChildren()){
+
+                            if (!inDsp.child("date").getValue().toString().equals("date")){
+
+
+                                if (String.valueOf(inDsp.child("confirmed").getValue()).equals("1")) {
+
+                                    String typeOfEvent = inDsp.child("typeOfEvent").getValue().toString();
+
+
+                                    if (typeOfEvent.equals("competition")) {
+
+                                        String levelOfEvent = inDsp.child("levelOfEvent").getValue().toString();
+
+                                        rating += Integer.parseInt(dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).getValue().toString());
+                                    }
+
+
+                                    if (typeOfEvent.equals("mark")){
+
+                                        String markOfEvent = inDsp.child("markOfEvent").getValue().toString();
+
+                                        rating += Integer.parseInt(dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(markOfEvent).getValue().toString());
+                                    }
+                                }
+                            }
+                        }
+
+
+                        mRateList.add(position, new RateItem(dsp.child("name").getValue().toString(),dsp.child("surname").getValue().toString(), String.valueOf(rating), userID));
                         position += 1;
                     }
                 }
@@ -102,6 +149,24 @@ public class RateListFragment extends Fragment {
             }
         });
     }
+
+
+
+    private void rateItemClicked(int position){
+        RateItem item = mRateList.get(position);
+
+
+        //Will be remade in future(at the moment using crutch)
+        String userId = item.getmUserId();
+
+        Intent intent = new Intent(getActivity(), ProfileBlankActivity.class);
+        intent.putExtra("EXTRA_ID", userId);
+
+        startActivity(intent);
+    }
+
+
+
 
 
     // just toasts, nothing interesting

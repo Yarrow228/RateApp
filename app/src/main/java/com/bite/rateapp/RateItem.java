@@ -5,13 +5,14 @@ public class RateItem {
     private String mUserName;
     private String mUserSurname;
     private String mUserRating;
+    private String mUserId;
 
 
-    public RateItem(String userName, String userSurname, String userRating){
+    public RateItem(String userName, String userSurname, String userRating, String userId){
         mUserName = userName;
         mUserSurname = userSurname;
         mUserRating = userRating;
-
+        mUserId = userId;
     }
 
     public String getmUserName() {
@@ -24,5 +25,9 @@ public class RateItem {
 
     public String getmUserRating() {
         return mUserRating;
+    }
+
+    public String getmUserId() {
+        return mUserId;
     }
 }

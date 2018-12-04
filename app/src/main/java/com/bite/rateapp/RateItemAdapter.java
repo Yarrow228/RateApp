@@ -13,6 +13,16 @@ public class RateItemAdapter extends RecyclerView.Adapter<RateItemAdapter.Exampl
 
 
     private ArrayList<RateItem> mRateList;
+    private OnItemClickListener mListener;
+
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener = listener;
+    }
 
 
     public static class ExampleViewHolder extends RecyclerView.ViewHolder{
@@ -22,13 +32,26 @@ public class RateItemAdapter extends RecyclerView.Adapter<RateItemAdapter.Exampl
         public TextView mUserRating;
 
 
-        public ExampleViewHolder(@NonNull View itemView) {
+        public ExampleViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
 
             mUserName = itemView.findViewById(R.id.rate_list_card_name);
             mUserSurname = itemView.findViewById(R.id.rate_list_card_surname);
             mUserRating = itemView.findViewById(R.id.rate_list_card_rating);
 
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null){
+
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
 
         }
     }
@@ -43,7 +66,7 @@ public class RateItemAdapter extends RecyclerView.Adapter<RateItemAdapter.Exampl
     @Override
     public RateItemAdapter.ExampleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rate_list_item, parent, false);
-        ExampleViewHolder evh = new ExampleViewHolder(v);
+        ExampleViewHolder evh = new ExampleViewHolder(v, mListener);
         return evh;
     }
 

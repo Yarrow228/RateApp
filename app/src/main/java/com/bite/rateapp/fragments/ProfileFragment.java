@@ -60,12 +60,12 @@ public class ProfileFragment extends Fragment {
     public static final String STATUS_PREF = "statusPref";
 
     //For Recycler View
-
     private ArrayList<ProfileItem> mExampleList;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private int rating = 0;
+    private int mExampleListLen = 0;
 
 
     //For teacher account
@@ -73,6 +73,7 @@ public class ProfileFragment extends Fragment {
     private RecyclerView mConfRecyclerView;
     private ConfItemAdapter mConfAdapter;
     private RecyclerView.LayoutManager mConfLayoutManager;
+    private int mConfListLen = 0;
 
 
     @Override
@@ -151,6 +152,10 @@ public class ProfileFragment extends Fragment {
 
         refreshFragment(container);
 
+
+        //toastMessage("Len " + String.valueOf(mExampleListLen));
+
+
         return view;
     }
 
@@ -165,7 +170,6 @@ public class ProfileFragment extends Fragment {
                 UserInfUtil uInfo = new UserInfUtil();
                 uInfo.setStatus(dataSnapshot.child("status").getValue().toString());
 
-                toastMessage("LOL");
 
                 sharedPrefs =  getActivity().getSharedPreferences(PREF, Context.MODE_PRIVATE);
                 ed = sharedPrefs.edit();
@@ -209,6 +213,15 @@ public class ProfileFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
+    public void removeItem(int position){
+        if(mAdapter.getItemCount() != 0){
+            mExampleList.remove(position);
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+
+
 
 
 
@@ -302,7 +315,7 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    
+
 
     private void loadAndSaveUserInfo(String userId){
 
@@ -336,6 +349,17 @@ public class ProfileFragment extends Fragment {
 
 
     private void loadUserAchievements(){
+
+
+        /*
+        if (mExampleListLen != 0){
+
+            for (int i = 0; i < mExampleListLen; i++){
+                removeConfItem(i);
+            }
+            rating = 0;
+        }
+           */
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -420,6 +444,8 @@ public class ProfileFragment extends Fragment {
 
                 tvRating.setText(String.valueOf(rating));
                 mAdapter.notifyDataSetChanged();
+                mExampleListLen = position;
+                toastMessage(String.valueOf(mExampleListLen));
             }
 
             @Override
@@ -444,6 +470,7 @@ public class ProfileFragment extends Fragment {
 
 
                         for (DataSnapshot insideDsp : dsp.child("achievements").getChildren()){
+
 
                             if (!insideDsp.child("date").getValue().toString().equals("date")){
                                 if (insideDsp.child("confirmed").getValue().toString().equals("0")){
@@ -488,14 +515,8 @@ public class ProfileFragment extends Fragment {
     }
 
 
-    /*In future
-    public void removeItem(int position){
-        if(mAdapter.getItemCount() != 0){
-            mExampleList.remove(position);
-            mAdapter.notifyDataSetChanged();
-        }
-    }
-    */
+
+
 
     // just toasts, nothing interesting
     private void toastMessage(String message){

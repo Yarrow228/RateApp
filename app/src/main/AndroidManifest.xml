@@ -45,6 +45,12 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <activity
+            android:name=".ProfileBlankActivity"
+            android:theme="@style/AppTheme">
+        </activity>
+
+
     </application>
 
 </manifest>
