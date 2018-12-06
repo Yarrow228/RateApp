@@ -3,6 +3,7 @@ package com.bite.rateapp.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -47,7 +48,7 @@ public class ProfileFragment extends Fragment {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
 
-    private TextView tvName, tvSurname, tvEmail, tvRating;
+    private TextView tvName, tvSurname, tvEmail, tvRating, tvSchool;
     private Button btnNewPost, btnDeletePost;
 
     //For Shared Preferences(get and save data)
@@ -58,6 +59,7 @@ public class ProfileFragment extends Fragment {
     public static final String SURNAME_PREF = "surnamePref";
     public static final String EMAIL_PREF = "emailPref";
     public static final String STATUS_PREF = "statusPref";
+    public static final String SCHOOL_PREF = "schoolPref";
 
     //For Recycler View
     private ArrayList<ProfileItem> mExampleList;
@@ -103,6 +105,7 @@ public class ProfileFragment extends Fragment {
         tvName = (TextView) view.findViewById(R.id.tvUserName);
         tvSurname = (TextView) view.findViewById(R.id.tvUserSurname);
         tvRating = (TextView) view.findViewById(R.id.tvUserRating);
+        tvSchool = (TextView) view.findViewById(R.id.tvUserSchool);
         btnNewPost = (Button) view.findViewById(R.id.btnNewPost);
 
         mRecyclerView = view.findViewById(R.id.rcPostsList);
@@ -111,9 +114,9 @@ public class ProfileFragment extends Fragment {
 
         //Showing name and surname
         loadAndSaveUserInfo(user.getUid());
-        tvName.setText(sharedPrefs.getString(NAME_PREF,"None")); //
+        tvName.setText(sharedPrefs.getString(NAME_PREF,"None"));
         tvSurname.setText(sharedPrefs.getString(SURNAME_PREF, "None"));
-
+        tvSchool.setText(sharedPrefs.getString(SCHOOL_PREF, "None"));
 
 
         toastMessage(sharedPrefs.getString(STATUS_PREF, ""));
@@ -269,14 +272,15 @@ public class ProfileFragment extends Fragment {
     private void checkedConfItem(final int position){
 
         ConfItem item = mConfList.get(position);
+        final FirebaseUser user = mAuth.getCurrentUser();
+
+
 
         final String date = item.getmConfDate();
         final String time = item.getmConfTime();
         final String name = item.getmConfName();
         final String surname = item.getmConfSurname();
 
-        //toastMessage(date);
-        //toastMessage(time);
 
 
         mDatabase.child("Users").addValueEventListener(new ValueEventListener() {
@@ -297,7 +301,16 @@ public class ProfileFragment extends Fragment {
                                 //toastMessage(inDsp.getKey());
                                 //toastMessage(inDsp.toString());
 
+                                SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm");
+                                String strTime = simpleTimeFormat.format(new Date());
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy");
+                                String strDate = simpleDateFormat.format(new Date());
+
+
                                 mDatabase.child("Users").child(dsp.getKey()).child("achievements").child(inDsp.getKey()).child("confirmed").setValue(1);
+                                mDatabase.child("Users").child(dsp.getKey()).child("achievements").child(inDsp.getKey()).child("confirmedBy").setValue(user.getUid());
+                                mDatabase.child("Users").child(dsp.getKey()).child("achievements").child(inDsp.getKey()).child("confirmedDate").setValue(strDate.replace("/", "."));
+                                mDatabase.child("Users").child(dsp.getKey()).child("achievements").child(inDsp.getKey()).child("confirmedTime").setValue(strTime);
                                 removeConfItem(position);
                             }
                         }
@@ -317,22 +330,28 @@ public class ProfileFragment extends Fragment {
 
 
 
-    private void loadAndSaveUserInfo(String userId){
+    private void loadAndSaveUserInfo(final String userId){
 
-        mDatabase.child("Users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 UserInfUtil uInfo = new UserInfUtil();
 
-                uInfo.setName(dataSnapshot.child("name").getValue().toString());
-                uInfo.setSurname(dataSnapshot.child("surname").getValue().toString());
-                uInfo.setEmail(dataSnapshot.child("email").getValue().toString());
-                uInfo.setStatus(dataSnapshot.child("status").getValue().toString());
+                uInfo.setName(dataSnapshot.child("Users").child(userId).child("name").getValue().toString());
+                uInfo.setSurname(dataSnapshot.child("Users").child(userId).child("surname").getValue().toString());
+                uInfo.setEmail(dataSnapshot.child("Users").child(userId).child("email").getValue().toString());
+                uInfo.setStatus(dataSnapshot.child("Users").child(userId).child("status").getValue().toString());
+                uInfo.setSchoolId(dataSnapshot.child("Users").child(userId).child("schoolId").getValue().toString());
+
+                String school = dataSnapshot.child("Schools").child(uInfo.getSchoolId()).child("name").getValue().toString();
+
+
 
                 sharedPrefs =  getActivity().getSharedPreferences(PREF, Context.MODE_PRIVATE);
                 ed = sharedPrefs.edit();
 
+                ed.putString(SCHOOL_PREF, school);
                 ed.putString(NAME_PREF, uInfo.getName());
                 ed.putString(SURNAME_PREF, uInfo.getSurname());
                 ed.putString(EMAIL_PREF, uInfo.getEmail());
@@ -377,13 +396,34 @@ public class ProfileFragment extends Fragment {
 
                         String typeOfEvent = dsp.child("typeOfEvent").getValue().toString();
                         String timeOfPost = dsp.child("time").getValue().toString();
+                        String confirm = dsp.child("confirmed").getValue().toString();
+
+                        String[] typesOfEvent = getResources().getStringArray(R.array.typesOfEvent);
+                        String[] levelsOfEvent = getResources().getStringArray(R.array.levelOfEvent);
+                        String type;
 
                         if (typeOfEvent.equals("competition")) {
+
+                            type = typesOfEvent[1];
+                             String level= "";
 
                             String levelOfEvent = dsp.child("levelOfEvent").getValue().toString();
                             String reward = dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).getValue().toString();
 
-                            mExampleList.add(position, new ProfileItem(date, timeOfPost, dsp.child("comment").getValue().toString(), reward, typeOfEvent, levelOfEvent));
+                            //Crutch
+                            if (levelOfEvent.equals("school")){
+                                level = levelsOfEvent[1];
+                            }else if (levelOfEvent.equals("district")){
+                                level = levelsOfEvent[2];
+                            }else if (levelOfEvent.equals("region")){
+                                level = levelsOfEvent[3];
+                            }else if (levelOfEvent.equals("republic")){
+                                level = levelsOfEvent[4];
+                            }
+
+
+
+                            mExampleList.add(position, new ProfileItem(date, timeOfPost, dsp.child("comment").getValue().toString(), reward, type, level, confirm));
                             position += 1;
 
 
@@ -403,7 +443,7 @@ public class ProfileFragment extends Fragment {
                                 newDate = date.substring(0, date.length()-2) + String.valueOf(num);
                             }
 
-                            if(!nowDate.equals(newDate) && !dsp.child("confirmed").getValue().toString().equals("0")){
+                            if(!nowDate.equals(newDate) && !confirm.equals("0")){
                                 rating += Integer.parseInt(reward);
                             }
                         }
@@ -413,7 +453,11 @@ public class ProfileFragment extends Fragment {
                             String markOfEvent = dsp.child("markOfEvent").getValue().toString();
                             String reward = dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(markOfEvent).getValue().toString();
 
-                            mExampleList.add(position, new ProfileItem(date, timeOfPost, dsp.child("comment").getValue().toString(), reward, typeOfEvent, markOfEvent));
+
+                            type = typesOfEvent[2];
+
+
+                            mExampleList.add(position, new ProfileItem(date, timeOfPost, dsp.child("comment").getValue().toString(), reward, type, markOfEvent, confirm));
                             position += 1;
 
 
@@ -433,8 +477,9 @@ public class ProfileFragment extends Fragment {
                                 newDate = date.substring(0, date.length()-2) + String.valueOf(num);
                             }
 
-                            if(!nowDate.equals(newDate) && !dsp.child("confirmed").getValue().toString().equals("0")){
+                            if(!nowDate.equals(newDate) && !confirm.equals("0")){
                                 rating += Integer.parseInt(reward);
+
                             }
                         }
                     }

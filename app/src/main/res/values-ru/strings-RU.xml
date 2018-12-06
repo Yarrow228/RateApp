@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">RateApp</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="nav_header_title" translatable="false">Name Surname</string>
+    <string name="nav_header_subtitle" translatable="false">email</string>
+    <string name="nav_header_desc" translatable="false">Navigation header</string>
+    <string name="action_settings" translatable="false">Settings</string>
+
+
+
+    <string name="nav_drawer_profile">Профиль</string>
+    <string name="nav_drawer_rating">Рейтинг</string>
+    <string name="nav_drawer_settings">Настройки</string>
+    <string name="nav_drawer_title">Связь</string>
+    <string name="nav_drawer_share">Поделиться</string>
+
+
+    <string name="post_activity_label">Новая запись</string>
+
+
+    <string name="email_hint" translatable="false">Email</string>
+    <string name="password_hint">Пароль</string>
+    <string name="sign_in">Войти</string>
+    <string name="sign_out">Выйти</string>
+    <string name="sign_up">Регистрация</string>
+
+    <string name="sign_up_key">Введите ключ</string>
+    <string name="sign_up_email" translatable="false">Введите email</string>
+    <string name="sign_up_password">Введите пароль</string>
+    <string name="sign_up_passwordConfirm">Подтвердите пароль</string>
+
+
+    <string name="main_new_post">Новая запись</string>
+    <string name="main_delete_post" translatable="false">Delete post</string>
+    <string name="main_item_card_comma" translatable="false">, </string>
+
+    <string name="new_post_your_comment">Ваш комментарий:</string>
+    <string name="new_post_check_item" translatable="false">Item1</string>
+    <string name="new_post_back_item" translatable="false">Item2</string>
+
+    <string-array name="typesOfEvent">
+        <item>Выберите тип события</item>
+        <item>Соревнования</item>
+        <item>Отметка</item>
+    </string-array>
+
+    <string-array name="levelOfEvent">
+        <item>Выберите уровень события</item>
+        <item>Школа</item>
+        <item>Район</item>
+        <item>Регион</item>
+        <item>Республика</item>
+    </string-array>
+
+    <string-array name="markOfEvent">
+        <item>Выберите отметку</item>
+        <item>10</item>
+        <item>9</item>
+        <item>8</item>
+        <item>7</item>
+        <item>6</item>
+    </string-array>
+
+
+</resources>

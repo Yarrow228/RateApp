@@ -84,6 +84,17 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tvUserSchool"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+
+                android:text="Gymnasium 1"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                />
+
+            <TextView
                 android:id="@+id/tvUserRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

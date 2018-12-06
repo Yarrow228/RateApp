@@ -75,6 +75,18 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tvUserSchool"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+
+            android:text="Gymnasium 1"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            />
+
+
+        <TextView
             android:id="@+id/tvUserRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -95,7 +107,8 @@
         android:id="@+id/rcPostsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/btnNewPost"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/layout_info"
         android:clipToPadding="false"
         android:padding="8dp"
         tools:context=".MainActivity">

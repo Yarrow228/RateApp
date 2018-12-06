@@ -10,9 +10,10 @@ public class ProfileItem {
     private String mPostTypeOfEvent;
     private String mPostLevelOfEvent;
 
+    private String mPostConfirm;
 
 
-    public ProfileItem(String postDate, String postTime, String postComment, String postMark, String postTypeOfEvent, String postLevelOfEvent){
+    public ProfileItem(String postDate, String postTime, String postComment, String postMark, String postTypeOfEvent, String postLevelOfEvent, String postConfirm){
         mPostDate = postDate;
         mPostComment = postComment;
         mPostMark = postMark;
@@ -21,6 +22,7 @@ public class ProfileItem {
         mPostLevelOfEvent = postLevelOfEvent;
         mPostTypeOfEvent = postTypeOfEvent;
 
+        mPostConfirm = postConfirm;
     }
 
     public String getmPostDate() {
@@ -47,4 +49,7 @@ public class ProfileItem {
         return mPostLevelOfEvent;
     }
 
+    public String getmPostConfirm() {
+        return mPostConfirm;
+    }
 }

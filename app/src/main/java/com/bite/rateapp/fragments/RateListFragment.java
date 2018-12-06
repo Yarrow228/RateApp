@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,8 +48,13 @@ public class RateListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_rate_list, container, false);
 
-        mRecyclerView = view.findViewById(R.id.rcRateList);
 
+        //Toolbar toolbar = (Toolbar) view.findViewById(R.id.new_post_toolbar);
+        //setSupportActionBar(toolbar);
+
+
+
+        mRecyclerView = view.findViewById(R.id.rcRateList);
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         createExampleList();
@@ -159,9 +166,9 @@ public class RateListFragment extends Fragment {
         //Will be remade in future(at the moment using crutch)
         String userId = item.getmUserId();
 
+
         Intent intent = new Intent(getActivity(), ProfileBlankActivity.class);
         intent.putExtra("EXTRA_ID", userId);
-
         startActivity(intent);
     }
 

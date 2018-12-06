@@ -1,5 +1,6 @@
 package com.bite.rateapp;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ProfileItemAdapter extends RecyclerView.Adapter<ProfileItemAdapter.ExampleViewHolder> {
 
@@ -57,10 +60,21 @@ public class ProfileItemAdapter extends RecyclerView.Adapter<ProfileItemAdapter.
 
         holder.mPostDate.setText(currentItem.getmPostDate());
         holder.mPostComment.setText(currentItem.getmPostComment());
-        holder.mPostMark.setText("+" + currentItem.getmPostMark());
+        holder.mPostMark.setText(currentItem.getmPostMark());
         holder.mPostTime.setText(currentItem.getmPostTime());
         holder.mPostTypeOfEvent.setText(currentItem.getmPostTypeOfEvent());
         holder.mPostLevelOfEvent.setText(currentItem.getmPostLevelOfEvent());
+
+
+        if (currentItem.getmPostConfirm().equals("1")){
+            holder.mPostMark.setText("+" + currentItem.getmPostMark());
+            holder.mPostMark.setTextColor(Color.parseColor("#3F51B5"));
+        }
+
+
+        if (checkDate(currentItem.getmPostDate())){
+            holder.mPostMark.setTextColor(Color.parseColor("#E0E0E0"));
+        }
 
     }
 
@@ -68,4 +82,32 @@ public class ProfileItemAdapter extends RecyclerView.Adapter<ProfileItemAdapter.
     public int getItemCount() {
         return mExampleList.size();
     }
+
+
+    private boolean checkDate(String date){
+
+
+        //Check if its confirmed and not out of time
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy");
+        String nowDate = simpleDateFormat.format(new Date()).replace("/",".");
+
+        int preLastNum = Character.getNumericValue(date.charAt(date.length()-2));
+        int lastNum = Character.getNumericValue(date.charAt(date.length()-1)) + 1;
+        int num = preLastNum*10 + lastNum;
+
+        String newDate;
+        if(num < 10){
+            newDate = date.substring(0, date.length()-1) + String.valueOf(num);
+        }else{
+            newDate = date.substring(0, date.length()-2) + String.valueOf(num);
+        }
+
+        if (nowDate.equals(newDate)){
+            return true;
+        }
+
+        return false;
+    }
+
+
 }

@@ -144,6 +144,7 @@ public class SignUpActivity extends AppCompatActivity {
                 uInfo.setName(dataSnapshot.child("Keys").child(key).child("name").getValue().toString());
                 uInfo.setSurname(dataSnapshot.child("Keys").child(key).child("surname").getValue().toString());
                 uInfo.setStatus(dataSnapshot.child("Keys").child(key).child("status").getValue().toString());
+                uInfo.setSchoolId(dataSnapshot.child("Keys").child(key).child("schoolId").getValue().toString());
                 uInfo.setEmail(email);
 
 
@@ -152,6 +153,7 @@ public class SignUpActivity extends AppCompatActivity {
                 mDatabase.child("Users").child(userID).child("surname").setValue(uInfo.getSurname());
                 mDatabase.child("Users").child(userID).child("status").setValue(uInfo.getStatus());
                 mDatabase.child("Users").child(userID).child("email").setValue(uInfo.getEmail());
+                mDatabase.child("Users").child(userID).child("schoolId").setValue(uInfo.getSchoolId());
                 mDatabase.child("Users").child(userID).child("achievements").child("defaultAchievement").child("date").setValue("date");
 
 

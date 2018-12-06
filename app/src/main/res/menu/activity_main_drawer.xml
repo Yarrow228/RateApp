@@ -8,24 +8,24 @@
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_person"
-            android:title="Profile" />
+            android:title="@string/nav_drawer_profile" />
         <item
             android:id="@+id/nav_rating"
             android:icon="@drawable/ic_format_align_justify"
-            android:title="Rating" />
+            android:title="@string/nav_drawer_rating" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
-            android:title="Settings" />
+            android:title="@string/nav_drawer_settings" />
 
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/nav_drawer_title">
         <menu>
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="@string/nav_drawer_share" />
 
         </menu>
     </item>

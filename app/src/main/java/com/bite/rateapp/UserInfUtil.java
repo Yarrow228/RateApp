@@ -6,7 +6,7 @@ public class UserInfUtil {
     private String surname;
     private String email;
     private String status;
-    private int key;
+    private String schoolId;
 
 
     public UserInfUtil(){
@@ -44,5 +44,13 @@ public class UserInfUtil {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(String school) {
+        this.schoolId = school;
     }
 }

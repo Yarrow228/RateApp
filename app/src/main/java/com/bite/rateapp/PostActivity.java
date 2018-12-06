@@ -70,26 +70,6 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
 
-        /*
-        TextView textView = (TextView)typeOfEvent.getSelectedView();
-        String result = textView.getText().toString();
-        toastMessage(result);
-        */
-
-
-
-       /*
-        if(!levelOfEvent.getSelectedItem().toString().equals("Choose level of event") && levelOfEventbool == true){
-            //level = levelOfEvent.getSelectedItem().toString();
-            toastMessage("level");
-        }
-
-        if(!markOfEvent.getSelectedItem().toString().equals("Choose mark") && markOfEventbool == true){
-            //mark = markOfEvent.getSelectedItem().toString();
-            toastMessage("mark");
-        }
-        */
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.new_post_toolbar);
         setSupportActionBar(toolbar);
@@ -133,7 +113,6 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
                         mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("date").setValue(strDate.replace("/","."));
                         mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("time").setValue(strTime);
                         mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("comment").setValue(comment);
-                        mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("rateMark").setValue("rateMark");
                         mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("confirmed").setValue("0");
 
 
@@ -148,7 +127,6 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
                         mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("date").setValue(strDate.replace("/","."));
                         mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("time").setValue(strTime);
                         mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("comment").setValue(comment);
-                        mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("rateMark").setValue("rateMark");
                         mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("confirmed").setValue("0");
 
 
