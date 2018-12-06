@@ -13,6 +13,10 @@
     <string name="nav_drawer_title">Communicate</string>
     <string name="nav_drawer_share">Share</string>
 
+    <string name="rating_fragment_label">Rating</string>
+    <string name="profile_fragment_label">Profile</string>
+    <string name="settings_fragment_label">Settings</string>
+
     <string name="post_activity_label">New Post</string>
 
 
@@ -60,7 +64,10 @@
         <item>6</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="settings_fragment_btn_account_settings">Account settings</string>
+    <string name="settings_fragment_btn_sign_out">Sign out</string>
+
+
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 
 </resources>

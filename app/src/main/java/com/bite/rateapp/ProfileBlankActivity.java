@@ -155,12 +155,36 @@ public class ProfileBlankActivity extends AppCompatActivity {
                         String confirm = dsp.child("confirmed").getValue().toString();
 
 
+                        String[] typesOfEvent = getResources().getStringArray(R.array.typesOfEvent);
+                        String[] levelsOfEvent = getResources().getStringArray(R.array.levelOfEvent);
+                        String type;
+
+
+
                         if (typeOfEvent.equals("competition")) {
+
+                            type = typesOfEvent[1];
+                            String level= "";
+
 
                             String levelOfEvent = dsp.child("levelOfEvent").getValue().toString();
                             String reward = dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).getValue().toString();
 
-                            mExampleList.add(position, new ProfileItem(date, timeOfPost, dsp.child("comment").getValue().toString(), reward, typeOfEvent, levelOfEvent, confirm));
+
+                            //Crutch
+                            if (levelOfEvent.equals("school")){
+                                level = levelsOfEvent[1];
+                            }else if (levelOfEvent.equals("district")){
+                                level = levelsOfEvent[2];
+                            }else if (levelOfEvent.equals("region")){
+                                level = levelsOfEvent[3];
+                            }else if (levelOfEvent.equals("republic")){
+                                level = levelsOfEvent[4];
+                            }
+
+
+
+                            mExampleList.add(position, new ProfileItem(date, timeOfPost, dsp.child("comment").getValue().toString(), reward, type, level, confirm));
                             position += 1;
 
 
@@ -191,11 +215,11 @@ public class ProfileBlankActivity extends AppCompatActivity {
                             String reward = dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(markOfEvent).getValue().toString();
 
 
+                            type = typesOfEvent[2];
 
 
 
-
-                            mExampleList.add(position, new ProfileItem(date, timeOfPost, dsp.child("comment").getValue().toString(), reward, typeOfEvent, markOfEvent, confirm));
+                            mExampleList.add(position, new ProfileItem(date, timeOfPost, dsp.child("comment").getValue().toString(), reward, type, markOfEvent, confirm));
                             position += 1;
 
 

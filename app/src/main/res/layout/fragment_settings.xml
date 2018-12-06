@@ -74,7 +74,7 @@
         android:background="@android:color/white"
         android:paddingStart="15dp"
 
-        android:text="Account settings"
+        android:text="@string/settings_fragment_btn_account_settings"
         android:textSize="15sp"
         android:gravity="start|center"
         android:textColor="@color/colorPrimary"
@@ -88,7 +88,7 @@
         android:background="@android:color/white"
         android:paddingStart="15dp"
 
-        android:text="Sign out"
+        android:text="@string/settings_fragment_btn_sign_out"
         android:textSize="15sp"
         android:gravity="start|center"
         android:textColor="@color/colorPrimary"

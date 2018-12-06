@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bite.rateapp.MainActivity;
 import com.bite.rateapp.PostActivity;
 import com.bite.rateapp.ProfileBlankActivity;
 import com.bite.rateapp.ProfileItem;
@@ -49,8 +52,8 @@ public class RateListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_rate_list, container, false);
 
 
-        //Toolbar toolbar = (Toolbar) view.findViewById(R.id.new_post_toolbar);
-        //setSupportActionBar(toolbar);
+        Toolbar toolbarFragment = (Toolbar)getActivity().findViewById(R.id.toolbar);
+        ((MainActivity)getActivity()).setToolbar(toolbarFragment, getResources().getString(R.string.rating_fragment_label));
 
 
 

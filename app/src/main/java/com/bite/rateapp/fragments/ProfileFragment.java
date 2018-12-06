@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.bite.rateapp.ConfItem;
 import com.bite.rateapp.ConfItemAdapter;
+import com.bite.rateapp.MainActivity;
 import com.bite.rateapp.ProfileItemAdapter;
 import com.bite.rateapp.ProfileItem;
 import com.bite.rateapp.PostActivity;
@@ -100,6 +102,11 @@ public class ProfileFragment extends Fragment {
 
 
         View view = inflater.inflate(R.layout.fragment_frofile_flexible, container, false);
+
+
+
+        Toolbar toolbarFragment = (Toolbar)getActivity().findViewById(R.id.toolbar);
+        ((MainActivity)getActivity()).setToolbar(toolbarFragment, getResources().getString(R.string.profile_fragment_label));
 
 
         tvName = (TextView) view.findViewById(R.id.tvUserName);
@@ -405,7 +412,7 @@ public class ProfileFragment extends Fragment {
                         if (typeOfEvent.equals("competition")) {
 
                             type = typesOfEvent[1];
-                             String level= "";
+                            String level= "";
 
                             String levelOfEvent = dsp.child("levelOfEvent").getValue().toString();
                             String reward = dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).getValue().toString();

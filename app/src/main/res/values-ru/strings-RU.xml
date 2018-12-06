@@ -15,6 +15,10 @@
     <string name="nav_drawer_title">Связь</string>
     <string name="nav_drawer_share">Поделиться</string>
 
+    <string name="rating_fragment_label">Рейтинг</string>
+    <string name="profile_fragment_label">Профиль</string>
+    <string name="settings_fragment_label">Настройки</string>
+
 
     <string name="post_activity_label">Новая запись</string>
 
@@ -61,6 +65,12 @@
         <item>7</item>
         <item>6</item>
     </string-array>
+
+
+
+    <string name="settings_fragment_btn_account_settings">Настройки аккаунта</string>
+    <string name="settings_fragment_btn_sign_out">Выйти</string>
+
 
 
 </resources>
