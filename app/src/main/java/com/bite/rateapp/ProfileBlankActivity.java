@@ -30,6 +30,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 public class ProfileBlankActivity extends AppCompatActivity {
@@ -235,6 +237,30 @@ public class ProfileBlankActivity extends AppCompatActivity {
                         }
                     }
                 }
+
+
+
+                Collections.sort(mExampleList, new Comparator<ProfileItem>() {
+                    @Override
+                    public int compare(ProfileItem o1, ProfileItem o2) {
+
+                        int last_two1 = (Character.getNumericValue(o1.getmPostDate().charAt(o1.getmPostDate().length()-2)))*10 + Character.getNumericValue(o1.getmPostDate().charAt(o1.getmPostDate().length()-1));
+                        int middle_two1 = (Character.getNumericValue(o1.getmPostDate().charAt(o1.getmPostDate().length()-5)))*10 + Character.getNumericValue(o1.getmPostDate().charAt(o1.getmPostDate().length()-4));
+                        int first_two1 = (Character.getNumericValue(o1.getmPostDate().charAt(0)))*10 + Character.getNumericValue(o1.getmPostDate().charAt(1));
+
+                        String sum1 = String.valueOf(first_two1 + middle_two1*10 + last_two1*100);
+
+                        int last_two2 = (Character.getNumericValue(o2.getmPostDate().charAt(o2.getmPostDate().length()-2)))*10 + Character.getNumericValue(o2.getmPostDate().charAt(o2.getmPostDate().length()-1));
+                        int middle_two2 = (Character.getNumericValue(o2.getmPostDate().charAt(o2.getmPostDate().length()-5)))*10 + Character.getNumericValue(o2.getmPostDate().charAt(o2.getmPostDate().length()-4));
+                        int first_two2 = (Character.getNumericValue(o2.getmPostDate().charAt(0)))*10 + Character.getNumericValue(o2.getmPostDate().charAt(1));
+
+                        String sum2 = String.valueOf(first_two2 + middle_two2*10 + last_two2*100);
+
+                        return -sum1.compareToIgnoreCase(sum2);
+
+                        //return -o1.getmPostDate().compareToIgnoreCase(o2.getmPostDate());
+                    }
+                });
 
 
 

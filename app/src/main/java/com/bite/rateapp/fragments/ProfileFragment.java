@@ -27,6 +27,7 @@ import com.bite.rateapp.ProfileItemAdapter;
 import com.bite.rateapp.ProfileItem;
 import com.bite.rateapp.PostActivity;
 import com.bite.rateapp.R;
+import com.bite.rateapp.RateItem;
 import com.bite.rateapp.UserInfUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,6 +41,8 @@ import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 
@@ -96,19 +99,11 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        FirebaseUser user = mAuth.getCurrentUser();
-
-        checkStatus(user.getUid());
-
-
 
         View view = inflater.inflate(R.layout.fragment_frofile_flexible, container, false);
 
-
-
         Toolbar toolbarFragment = (Toolbar)getActivity().findViewById(R.id.toolbar);
         ((MainActivity)getActivity()).setToolbar(toolbarFragment, getResources().getString(R.string.profile_fragment_label));
-
 
         tvName = (TextView) view.findViewById(R.id.tvUserName);
         tvSurname = (TextView) view.findViewById(R.id.tvUserSurname);
@@ -118,6 +113,20 @@ public class ProfileFragment extends Fragment {
 
         mRecyclerView = view.findViewById(R.id.rcPostsList);
         mConfRecyclerView = view.findViewById(R.id.rcConfPostsList);
+
+        //refreshFragment(container);
+        //toastMessage("Len " + String.valueOf(mExampleListLen));
+
+        return view;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        FirebaseUser user = mAuth.getCurrentUser();
+        checkStatus(user.getUid());
 
 
         //Showing name and surname
@@ -132,7 +141,6 @@ public class ProfileFragment extends Fragment {
 
         //Student view
         if (sharedPrefs.getString(STATUS_PREF, "").equals("0")){
-
 
             mConfRecyclerView.setVisibility(View.GONE);
 
@@ -160,23 +168,9 @@ public class ProfileFragment extends Fragment {
             createConfList();
             buildConfList();
         }
-
-        refreshFragment(container);
-
-
-        //toastMessage("Len " + String.valueOf(mExampleListLen));
-
-
-        return view;
     }
 
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        
-
-    }
 
     //check user status
     private void checkStatus(String userId){
@@ -216,7 +210,6 @@ public class ProfileFragment extends Fragment {
     }
 
 
-
     //createExampleList and buildRecycler view is for recycler view
     public void createExampleList(){
         mExampleList = new ArrayList<>();
@@ -239,7 +232,6 @@ public class ProfileFragment extends Fragment {
             mAdapter.notifyDataSetChanged();
         }
     }
-
 
 
     //For status 1("teacher") list if achievements
@@ -334,6 +326,7 @@ public class ProfileFragment extends Fragment {
 
     }
 
+
     private void loadAndSaveUserInfo(final String userId){
 
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -369,7 +362,6 @@ public class ProfileFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
     }
-
 
     private void loadUserAchievements(){
 
@@ -491,6 +483,32 @@ public class ProfileFragment extends Fragment {
 
 
 
+                Collections.sort(mExampleList, new Comparator<ProfileItem>() {
+                    @Override
+                    public int compare(ProfileItem o1, ProfileItem o2) {
+
+                        int last_two1 = (Character.getNumericValue(o1.getmPostDate().charAt(o1.getmPostDate().length()-2)))*10 + Character.getNumericValue(o1.getmPostDate().charAt(o1.getmPostDate().length()-1));
+                        int middle_two1 = (Character.getNumericValue(o1.getmPostDate().charAt(o1.getmPostDate().length()-5)))*10 + Character.getNumericValue(o1.getmPostDate().charAt(o1.getmPostDate().length()-4));
+                        int first_two1 = (Character.getNumericValue(o1.getmPostDate().charAt(0)))*10 + Character.getNumericValue(o1.getmPostDate().charAt(1));
+
+                        String sum1 = String.valueOf(first_two1 + middle_two1*10 + last_two1*100);
+
+                        int last_two2 = (Character.getNumericValue(o2.getmPostDate().charAt(o2.getmPostDate().length()-2)))*10 + Character.getNumericValue(o2.getmPostDate().charAt(o2.getmPostDate().length()-1));
+                        int middle_two2 = (Character.getNumericValue(o2.getmPostDate().charAt(o2.getmPostDate().length()-5)))*10 + Character.getNumericValue(o2.getmPostDate().charAt(o2.getmPostDate().length()-4));
+                        int first_two2 = (Character.getNumericValue(o2.getmPostDate().charAt(0)))*10 + Character.getNumericValue(o2.getmPostDate().charAt(1));
+
+                        String sum2 = String.valueOf(first_two2 + middle_two2*10 + last_two2*100);
+
+                        return -sum1.compareToIgnoreCase(sum2);
+
+                        //return -o1.getmPostDate().compareToIgnoreCase(o2.getmPostDate());
+                    }
+                });
+
+
+
+
+
                 tvRating.setText(String.valueOf(rating));
                 mAdapter.notifyDataSetChanged();
                 mExampleListLen = position;
@@ -503,7 +521,6 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
-
 
     private void loadNotConfirmedAchievements(){
 
@@ -556,7 +573,32 @@ public class ProfileFragment extends Fragment {
                     }
                 }
 
-                mConfAdapter.notifyDataSetChanged();
+
+
+                Collections.sort(mConfList, new Comparator<ConfItem>() {
+                            @Override
+                            public int compare(ConfItem o1, ConfItem o2) {
+
+
+                                int last_two1 = (Character.getNumericValue(o1.getmConfDate().charAt(o1.getmConfDate().length()-2)))*10 + Character.getNumericValue(o1.getmConfDate().charAt(o1.getmConfDate().length()-1));
+                                int middle_two1 = (Character.getNumericValue(o1.getmConfDate().charAt(o1.getmConfDate().length()-5)))*10 + Character.getNumericValue(o1.getmConfDate().charAt(o1.getmConfDate().length()-4));
+                                int first_two1 = (Character.getNumericValue(o1.getmConfDate().charAt(0)))*10 + Character.getNumericValue(o1.getmConfDate().charAt(1));
+
+                                String sum1 = String.valueOf(first_two1 + middle_two1*10 + last_two1*100);
+
+                                int last_two2 = (Character.getNumericValue(o2.getmConfDate().charAt(o2.getmConfDate().length()-2)))*10 + Character.getNumericValue(o2.getmConfDate().charAt(o2.getmConfDate().length()-1));
+                                int middle_two2 = (Character.getNumericValue(o2.getmConfDate().charAt(o2.getmConfDate().length()-5)))*10 + Character.getNumericValue(o2.getmConfDate().charAt(o2.getmConfDate().length()-4));
+                                int first_two2 = (Character.getNumericValue(o2.getmConfDate().charAt(0)))*10 + Character.getNumericValue(o2.getmConfDate().charAt(1));
+
+                                String sum2 = String.valueOf(first_two2 + middle_two2*10 + last_two2*100);
+
+                                return -sum1.compareToIgnoreCase(sum2);
+
+                            }
+                        });
+
+
+                        mConfAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -565,9 +607,6 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
-
-
-
 
 
     // just toasts, nothing interesting

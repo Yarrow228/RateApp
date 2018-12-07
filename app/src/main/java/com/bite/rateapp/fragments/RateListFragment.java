@@ -412,6 +412,7 @@ public class RateListFragment extends Fragment {
 
     private void loadData(){
 
+        //Should clear Recycler view!!!
         mAdapter.clear();
 
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -470,6 +471,7 @@ public class RateListFragment extends Fragment {
                 Collections.sort(mRateList, new Comparator<RateItem>() {
                     @Override
                     public int compare(RateItem o1, RateItem o2) {
+
                         return -o1.getmUserRating().compareToIgnoreCase(o2.getmUserRating());
                     }
                 });
