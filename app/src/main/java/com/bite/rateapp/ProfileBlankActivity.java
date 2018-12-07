@@ -69,16 +69,12 @@ public class ProfileBlankActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
-
-
         String userId = getIntent().getStringExtra("EXTRA_ID");
-        toastMessage(userId);
 
         loadUserInfo(userId);
         loadUserAchievements(userId);
         createExampleList();
         buildRecyclerView();
-
 
     }
 
@@ -125,16 +121,6 @@ public class ProfileBlankActivity extends AppCompatActivity {
 
     private void loadUserAchievements(final String userId){
 
-
-        /*
-        if (mExampleListLen != 0){
-
-            for (int i = 0; i < mExampleListLen; i++){
-                removeConfItem(i);
-            }
-            rating = 0;
-        }
-           */
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -269,6 +255,7 @@ public class ProfileBlankActivity extends AppCompatActivity {
         mExampleList = new ArrayList<>();
 
     }
+
     public void buildRecyclerView(){
 
         mRecyclerView.setHasFixedSize(true);
@@ -278,12 +265,7 @@ public class ProfileBlankActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
-
-
-
-
-
-
+    
 
 
     // just toasts, nothing interesting

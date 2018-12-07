@@ -37,6 +37,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import static com.bite.rateapp.fragments.ProfileFragment.PREF;
 
@@ -103,22 +105,13 @@ public class RateListFragment extends Fragment {
             case R.id.sub_item1:
                 loadDataSchool();
                 return true;
-
             case R.id.sub_item2:
-                toastMessage("District");
-
                 loadDataDistrict();
                 return true;
-
             case R.id.sub_item3:
-                toastMessage("Region");
-
-
                 loadDataRegion();
                 return true;
-
             case R.id.sub_item4:
-                toastMessage("Republic");
                 loadData();
                 return true;
         }
@@ -130,6 +123,7 @@ public class RateListFragment extends Fragment {
         mRateList = new ArrayList<>();
 
     }
+
     public void buildRecyclerView(){
 
         mRecyclerView.setHasFixedSize(true);
@@ -149,6 +143,7 @@ public class RateListFragment extends Fragment {
             }
         });
     }
+
 
 
     private void loadDataSchool(){
@@ -216,6 +211,17 @@ public class RateListFragment extends Fragment {
                             position += 1;
 
                         }
+
+
+
+                        Collections.sort(mRateList, new Comparator<RateItem>() {
+                            @Override
+                            public int compare(RateItem o1, RateItem o2) {
+                                return -o1.getmUserRating().compareToIgnoreCase(o2.getmUserRating());
+                            }
+                        });
+
+
 
                         mAdapter.notifyDataSetChanged();
                     }
@@ -294,6 +300,16 @@ public class RateListFragment extends Fragment {
 
                         }
 
+
+
+                        Collections.sort(mRateList, new Comparator<RateItem>() {
+                            @Override
+                            public int compare(RateItem o1, RateItem o2) {
+                                return -o1.getmUserRating().compareToIgnoreCase(o2.getmUserRating());
+                            }
+                        });
+
+
                         mAdapter.notifyDataSetChanged();
                     }
                 }
@@ -365,15 +381,17 @@ public class RateListFragment extends Fragment {
 
                             mRateList.add(position, new RateItem(dsp.child("name").getValue().toString(),dsp.child("surname").getValue().toString(), String.valueOf(rating), userID));
                             position += 1;
-
-
-
-
-
-
-
-
                         }
+
+
+
+                        Collections.sort(mRateList, new Comparator<RateItem>() {
+                            @Override
+                            public int compare(RateItem o1, RateItem o2) {
+                                return -o1.getmUserRating().compareToIgnoreCase(o2.getmUserRating());
+                            }
+                        });
+
 
                         mAdapter.notifyDataSetChanged();
                     }
@@ -444,6 +462,15 @@ public class RateListFragment extends Fragment {
                 }
 
 
+
+                Collections.sort(mRateList, new Comparator<RateItem>() {
+                    @Override
+                    public int compare(RateItem o1, RateItem o2) {
+                        return -o1.getmUserRating().compareToIgnoreCase(o2.getmUserRating());
+                    }
+                });
+
+
                 mAdapter.notifyDataSetChanged();
             }
 
@@ -453,6 +480,7 @@ public class RateListFragment extends Fragment {
             }
         });
     }
+
 
 
     private void rateItemClicked(int position){
