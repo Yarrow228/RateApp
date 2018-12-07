@@ -68,6 +68,13 @@
     <string name="settings_fragment_btn_sign_out">Sign out</string>
 
 
+    <string-array name="rating_filter">
+        <item>School</item>
+        <item>District</item>
+        <item>Region</item>
+        <item>Republic</item>
+    </string-array>
+
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 
 </resources>

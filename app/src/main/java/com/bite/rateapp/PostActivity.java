@@ -84,6 +84,7 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
         return super.onCreateOptionsMenu(menu);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -158,20 +159,22 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
         //toastMessage(parent.getItemAtPosition(position).toString());
+        String[] type = getResources().getStringArray(R.array.typesOfEvent);
 
-        if(parent.getItemAtPosition(position).toString().equals("Choose type of event")){
+
+        if(parent.getItemAtPosition(position).toString().equals(type[0])){
             markOfEvent.setEnabled(false);
             levelOfEvent.setEnabled(false);
             //markOfEventbool = false;
             //levelOfEventbool = false;
         }
-        if(parent.getItemAtPosition(position).toString().equals("Competition")){
+        if(parent.getItemAtPosition(position).toString().equals(type[1])){
             markOfEvent.setEnabled(false);
             levelOfEvent.setEnabled(true);
             //markOfEventbool = true;
             //levelOfEventbool = false;
         }
-        if(parent.getItemAtPosition(position).toString().equals("Mark")){
+        if(parent.getItemAtPosition(position).toString().equals(type[2])){
             levelOfEvent.setEnabled(false);
             markOfEvent.setEnabled(true);
             //markOfEventbool = false;

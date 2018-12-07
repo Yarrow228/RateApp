@@ -62,6 +62,7 @@ public class ProfileFragment extends Fragment {
     public static final String EMAIL_PREF = "emailPref";
     public static final String STATUS_PREF = "statusPref";
     public static final String SCHOOL_PREF = "schoolPref";
+    public static final String SCHOOL_ID_PREF = "schoolIdPref";
 
     //For Recycler View
     private ArrayList<ProfileItem> mExampleList;
@@ -126,7 +127,7 @@ public class ProfileFragment extends Fragment {
         tvSchool.setText(sharedPrefs.getString(SCHOOL_PREF, "None"));
 
 
-        toastMessage(sharedPrefs.getString(STATUS_PREF, ""));
+        //toastMessage(sharedPrefs.getString(STATUS_PREF, ""));
 
 
         //Student view
@@ -363,6 +364,7 @@ public class ProfileFragment extends Fragment {
                 ed.putString(SURNAME_PREF, uInfo.getSurname());
                 ed.putString(EMAIL_PREF, uInfo.getEmail());
                 ed.putString(STATUS_PREF, uInfo.getStatus());
+                ed.putString(SCHOOL_ID_PREF, uInfo.getSchoolId());
                 ed.apply();
 
             }
@@ -497,7 +499,7 @@ public class ProfileFragment extends Fragment {
                 tvRating.setText(String.valueOf(rating));
                 mAdapter.notifyDataSetChanged();
                 mExampleListLen = position;
-                toastMessage(String.valueOf(mExampleListLen));
+                //toastMessage(String.valueOf(mExampleListLen));
             }
 
             @Override

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_filter"
+        android:title="Item 1"
+        android:icon="@drawable/ic_filter_list"
+        app:showAsAction="ifRoom">
+
+
+        <menu>
+
+            <item
+                android:id="@+id/sub_item1"
+                android:title="School"/>
+
+            <item
+                android:id="@+id/sub_item2"
+                android:title="District"/>
+
+            <item
+                android:id="@+id/sub_item3"
+                android:title="Region"/>
+
+            <item
+                android:id="@+id/sub_item4"
+                android:title="Republic" />
+
+        </menu>
+
+    </item>
+
+
+
+</menu>

@@ -86,4 +86,11 @@ public class RateItemAdapter extends RecyclerView.Adapter<RateItemAdapter.Exampl
             return mRateList.size();
         }
 
+
+    public void clear(){
+        final int size = mRateList.size();
+        mRateList.clear();
+        notifyItemRangeRemoved(0,size);
+    }
+
 }
