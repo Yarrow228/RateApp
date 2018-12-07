@@ -3,7 +3,6 @@ package com.bite.rateapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -14,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,20 +31,23 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
     private FirebaseAuth mAuth;
 
     private EditText edComment;
-    private Spinner typeOfEvent, levelOfEvent, markOfEvent;
+    private Spinner typeOfEvent, levelOfEvent, markOfEvent, placeOfEvent;
 
     private boolean levelOfEventbool = false;
     private boolean markOfEventbool = false;
 
-    private int typePos, markPos, levelPos;
+    private int typePos, markPos, levelPos, placePos;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
 
-        edComment = (EditText) findViewById(R.id.edComment);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.new_post_toolbar);
+        setSupportActionBar(toolbar);
+
+        edComment = (EditText) findViewById(R.id.edComment);
 
 
         typeOfEvent = (Spinner) findViewById(R.id.spType);
@@ -62,6 +63,7 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
         levelOfEvent.setAdapter(adapter2);
         levelOfEvent.setOnItemSelectedListener(this);
 
+
         markOfEvent = (Spinner) findViewById(R.id.spMark);
         ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this, R.array.markOfEvent, android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -70,9 +72,14 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
 
+        placeOfEvent = (Spinner) findViewById(R.id.spPlace);
+        ArrayAdapter<CharSequence> adapter4 = ArrayAdapter.createFromResource(this, R.array.placeOfEvent, android.R.layout.simple_spinner_item);
+        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        placeOfEvent.setAdapter(adapter4);
+        placeOfEvent.setOnItemSelectedListener(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.new_post_toolbar);
-        setSupportActionBar(toolbar);
+
+
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
@@ -80,7 +87,7 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.new_post_main, menu);
+        getMenuInflater().inflate(R.menu.activity_post_toobar, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -108,7 +115,7 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
 
-                    if (levelPos != 0 && levelOfEvent.isEnabled()){  //Competition
+                    if (levelPos != 0 && levelOfEvent.isEnabled() && placePos != 0 && placeOfEvent.isEnabled()){  //Competition
 
 
                         mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("date").setValue(strDate.replace("/","."));
@@ -121,6 +128,7 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
                         toastMessage(levelOfEvent.getItemAtPosition(levelPos).toString());
                         mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("typeOfEvent").setValue("competition");
                         mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("levelOfEvent").setValue(levelOfEvent.getItemAtPosition(levelPos).toString().toLowerCase());
+                        mDatabase.child("Users").child(user.getUid()).child("achievements").child(timeAndDate).child("placeOfEvent").setValue(placeOfEvent.getItemAtPosition(placePos).toString());
                     }
                     if (markPos != 0 && markOfEvent.isEnabled()){
 
@@ -160,41 +168,41 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
         //toastMessage(parent.getItemAtPosition(position).toString());
         String[] type = getResources().getStringArray(R.array.typesOfEvent);
-
+        String[] level = getResources().getStringArray(R.array.levelOfEvent);
 
         if(parent.getItemAtPosition(position).toString().equals(type[0])){
             markOfEvent.setEnabled(false);
             levelOfEvent.setEnabled(false);
-            //markOfEventbool = false;
-            //levelOfEventbool = false;
+            placeOfEvent.setEnabled(false);
         }
+
+
         if(parent.getItemAtPosition(position).toString().equals(type[1])){
             markOfEvent.setEnabled(false);
             levelOfEvent.setEnabled(true);
-            //markOfEventbool = true;
-            //levelOfEventbool = false;
         }
+
+        if(parent.getItemAtPosition(position).toString().equals(level[1]) || parent.getItemAtPosition(position).toString().equals(level[2]) || parent.getItemAtPosition(position).toString().equals(level[3]) || parent.getItemAtPosition(position).toString().equals(level[4])){
+            placeOfEvent.setEnabled(true);
+        }
+
         if(parent.getItemAtPosition(position).toString().equals(type[2])){
             levelOfEvent.setEnabled(false);
+            placeOfEvent.setEnabled(false);
             markOfEvent.setEnabled(true);
-            //markOfEventbool = false;
-            //levelOfEventbool = true;
 
         }
 
 
-
-        if (levelOfEvent.isEnabled()){
+        if (levelOfEvent.isEnabled() && placeOfEvent.isEnabled()){
             typePos = typeOfEvent.getSelectedItemPosition();
             levelPos = levelOfEvent.getSelectedItemPosition();
-            toastMessage("level " + Integer.toString(levelPos));
-
+            placePos = placeOfEvent.getSelectedItemPosition();
         }
 
         if (markOfEvent.isEnabled()){
             typePos = typeOfEvent.getSelectedItemPosition();
             markPos = markOfEvent.getSelectedItemPosition();
-            toastMessage("mark " + Integer.toString(markPos));
         }
     }
 

@@ -35,7 +35,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp">
 
@@ -43,31 +43,30 @@
                 android:id="@+id/tvSettingsUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:textColor="@android:color/black"
-                android:textSize="20sp"
+                android:textSize="25sp"
                 android:text="Name"
                 android:layout_gravity="center|start"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="  "
-                android:layout_gravity="center|start"/>
 
             <TextView
                 android:id="@+id/tvSettingsUserSurname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:textColor="@android:color/black"
-                android:textSize="20sp"
+                android:textSize="25sp"
                 android:text="Surname"
                 android:layout_gravity="center|end"/>
         </LinearLayout>
+
     </LinearLayout>
 
 
 
     <Button
+        android:id="@+id/btnAccountSettings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"

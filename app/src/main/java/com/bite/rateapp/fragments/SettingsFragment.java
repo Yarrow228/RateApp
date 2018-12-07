@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bite.rateapp.MainActivity;
@@ -33,7 +34,8 @@ public class SettingsFragment extends Fragment {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
 
-    private Button btnSignOut;
+    private Button btnSignOut, btnAccountSettings;
+    private TextView tvName, tvSurname;
 
 
     //For Shared Preferences(get and save data)
@@ -50,7 +52,6 @@ public class SettingsFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
-        //checkStatus();
 
 
 
@@ -61,7 +62,16 @@ public class SettingsFragment extends Fragment {
         ((MainActivity)getActivity()).setToolbar(toolbarFragment, getResources().getString(R.string.settings_fragment_label));
 
 
+        tvName = (TextView) view.findViewById(R.id.tvSettingsUserName);
+        tvSurname = (TextView) view.findViewById(R.id.tvSettingsUserSurname);
         btnSignOut = (Button) view.findViewById(R.id.btnSignOut);
+        btnAccountSettings = (Button) view.findViewById(R.id.btnAccountSettings);
+
+
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        loadUserInfo(user.getUid());
+
 
         btnSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,25 +90,33 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+
+        btnAccountSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toastMessage("Work in progress");
+            }
+        });
+
         return view;
     }
 
-    private void checkStatus(){
 
-        FirebaseUser user = mAuth.getCurrentUser();
 
-        mDatabase.child("Users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void loadUserInfo(final String userId){
+
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 UserInfUtil uInfo = new UserInfUtil();
-                uInfo.setStatus(dataSnapshot.child("status").getValue().toString());
 
-                sharedPrefs =  getActivity().getSharedPreferences(PREF, Context.MODE_PRIVATE);
-                ed = sharedPrefs.edit();
+                uInfo.setName(dataSnapshot.child("Users").child(userId).child("name").getValue().toString());
+                uInfo.setSurname(dataSnapshot.child("Users").child(userId).child("surname").getValue().toString());
+                uInfo.setEmail(dataSnapshot.child("Users").child(userId).child("email").getValue().toString());
 
-                ed.putString(STATUS_PREF, uInfo.getStatus());
-                ed.apply();
+                tvName.setText(uInfo.getName());
+                tvSurname.setText(uInfo.getSurname());
             }
 
             @Override

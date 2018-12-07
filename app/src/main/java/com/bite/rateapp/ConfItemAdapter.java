@@ -113,4 +113,11 @@ public class ConfItemAdapter extends RecyclerView.Adapter<ConfItemAdapter.Exampl
     public int getItemCount() {
         return mConfList.size();
     }
+
+
+    public void clear(){
+        final int size = mConfList.size();
+        mConfList.clear();
+        notifyItemRangeRemoved(0,size);
+    }
 }

@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new RateListFragment()).commit();
 
         } else if (id == R.id.nav_share) {
-
+            toastMessage("Work in progress");
 
         } else if (id == R.id.nav_profile){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container , new ProfileFragment()).commit();

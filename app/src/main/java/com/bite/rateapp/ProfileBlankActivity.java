@@ -151,12 +151,15 @@ public class ProfileBlankActivity extends AppCompatActivity {
 
                             type = typesOfEvent[1];
                             String level= "";
+                            String placeOfEvent = dsp.child("placeOfEvent").getValue().toString();
+
 
 
                             String levelOfEvent = dsp.child("levelOfEvent").getValue().toString();
-                            String reward = dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).getValue().toString();
+                            String reward = dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).child(placeOfEvent).getValue().toString();
 
 
+                            /*
                             //Crutch
                             if (levelOfEvent.equals("school")){
                                 level = levelsOfEvent[1];
@@ -166,11 +169,11 @@ public class ProfileBlankActivity extends AppCompatActivity {
                                 level = levelsOfEvent[3];
                             }else if (levelOfEvent.equals("republic")){
                                 level = levelsOfEvent[4];
-                            }
+                            }*/
 
 
 
-                            mExampleList.add(position, new ProfileItem(date, timeOfPost, dsp.child("comment").getValue().toString(), reward, type, level, confirm));
+                            mExampleList.add(position, new ProfileItem(date, timeOfPost, dsp.child("comment").getValue().toString(), reward, type, levelOfEvent, confirm, placeOfEvent));
                             position += 1;
 
 
@@ -205,7 +208,7 @@ public class ProfileBlankActivity extends AppCompatActivity {
 
 
 
-                            mExampleList.add(position, new ProfileItem(date, timeOfPost, dsp.child("comment").getValue().toString(), reward, type, markOfEvent, confirm));
+                            mExampleList.add(position, new ProfileItem(date, timeOfPost, dsp.child("comment").getValue().toString(), reward, type, markOfEvent, confirm, ""));
                             position += 1;
 
 
@@ -248,8 +251,6 @@ public class ProfileBlankActivity extends AppCompatActivity {
         });
     }
 
-
-
     //createExampleList and buildRecycler view is for recycler view
     public void createExampleList(){
         mExampleList = new ArrayList<>();
@@ -265,7 +266,7 @@ public class ProfileBlankActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
-    
+
 
 
     // just toasts, nothing interesting

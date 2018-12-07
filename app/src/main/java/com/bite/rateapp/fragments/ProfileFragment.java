@@ -171,6 +171,13 @@ public class ProfileFragment extends Fragment {
     }
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        
+
+    }
+
     //check user status
     private void checkStatus(String userId){
 
@@ -215,6 +222,7 @@ public class ProfileFragment extends Fragment {
         mExampleList = new ArrayList<>();
 
     }
+
     public void buildRecyclerView(){
 
         mRecyclerView.setHasFixedSize(true);
@@ -224,6 +232,7 @@ public class ProfileFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
+
     public void removeItem(int position){
         if(mAdapter.getItemCount() != 0){
             mExampleList.remove(position);
@@ -233,13 +242,11 @@ public class ProfileFragment extends Fragment {
 
 
 
-
-
-
     //For status 1("teacher") list if achievements
     private void createConfList(){
         mConfList = new ArrayList<>();
     }
+
     private void buildConfList(){
 
         mConfRecyclerView.setHasFixedSize(true);
@@ -263,19 +270,10 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-
-
-
     private void removeConfItem(int position){
         mConfList.remove(position);
         mConfAdapter.notifyItemRemoved(position);
-
-
-
-
     }
-
-
 
     private void checkedConfItem(final int position){
 
@@ -336,8 +334,6 @@ public class ProfileFragment extends Fragment {
 
     }
 
-
-
     private void loadAndSaveUserInfo(final String userId){
 
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -375,19 +371,9 @@ public class ProfileFragment extends Fragment {
     }
 
 
-
     private void loadUserAchievements(){
 
-
-        /*
-        if (mExampleListLen != 0){
-
-            for (int i = 0; i < mExampleListLen; i++){
-                removeConfItem(i);
-            }
-            rating = 0;
-        }
-           */
+        //mExampleList.clear();
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -411,15 +397,22 @@ public class ProfileFragment extends Fragment {
                         String[] levelsOfEvent = getResources().getStringArray(R.array.levelOfEvent);
                         String type;
 
+
+
+
                         if (typeOfEvent.equals("competition")) {
 
                             type = typesOfEvent[1];
                             String level= "";
 
                             String levelOfEvent = dsp.child("levelOfEvent").getValue().toString();
-                            String reward = dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).getValue().toString();
+
+                            String placeOfEvent = dsp.child("placeOfEvent").getValue().toString();
+
+                            String reward = dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).child(placeOfEvent).getValue().toString();
 
                             //Crutch
+                            /*
                             if (levelOfEvent.equals("school")){
                                 level = levelsOfEvent[1];
                             }else if (levelOfEvent.equals("district")){
@@ -429,10 +422,12 @@ public class ProfileFragment extends Fragment {
                             }else if (levelOfEvent.equals("republic")){
                                 level = levelsOfEvent[4];
                             }
+                            */
 
 
 
-                            mExampleList.add(position, new ProfileItem(date, timeOfPost, dsp.child("comment").getValue().toString(), reward, type, level, confirm));
+
+                            mExampleList.add(position, new ProfileItem(date, timeOfPost, dsp.child("comment").getValue().toString(), reward, type, levelOfEvent, confirm, placeOfEvent));
                             position += 1;
 
 
@@ -466,7 +461,7 @@ public class ProfileFragment extends Fragment {
                             type = typesOfEvent[2];
 
 
-                            mExampleList.add(position, new ProfileItem(date, timeOfPost, dsp.child("comment").getValue().toString(), reward, type, markOfEvent, confirm));
+                            mExampleList.add(position, new ProfileItem(date, timeOfPost, dsp.child("comment").getValue().toString(), reward, type, markOfEvent, confirm, ""));
                             position += 1;
 
 
@@ -512,6 +507,8 @@ public class ProfileFragment extends Fragment {
 
     private void loadNotConfirmedAchievements(){
 
+        //mConfAdapter.clear();
+
         mDatabase.child("Users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -540,6 +537,7 @@ public class ProfileFragment extends Fragment {
                                     if(type.equals("competition")){
 
                                         String level = insideDsp.child("levelOfEvent").getValue().toString();
+
                                         mConfList.add(position, new ConfItem(name, surname, date, time, comment, type, level));
                                         position += 1;
                                     }

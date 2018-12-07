@@ -35,16 +35,9 @@
 
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
-                android:text="Mark"
+                android:text="Competition"
                 />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-
-                android:textSize="20sp"
-                android:text=" " />
 
             <TextView
                 android:id="@+id/postLevelOfEvent"
@@ -54,7 +47,18 @@
 
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
-                android:text="10"/>
+                android:text="District"/>
+
+            <TextView
+                android:id="@+id/postPlaceOfEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:text=""
+                />
 
 
         </LinearLayout>

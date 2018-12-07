@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginTop="50dp"
+    android:layout_marginTop="20dp"
     android:orientation="vertical"
     android:background="@color/colorGray">
 
@@ -15,8 +15,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@android:color/white"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="15dp">
+        android:layout_marginBottom="10dp">
 
         <Spinner
             android:id="@+id/spType"
@@ -44,6 +43,25 @@
             android:entries="@array/levelOfEvent"/>
 
     </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@android:color/white"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp">
+
+        <Spinner
+            android:id="@+id/spPlace"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:entries="@array/placeOfEvent"/>
+
+    </LinearLayout>
+
 
 
     <LinearLayout

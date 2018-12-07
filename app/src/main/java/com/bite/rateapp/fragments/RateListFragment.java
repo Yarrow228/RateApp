@@ -192,9 +192,11 @@ public class RateListFragment extends Fragment {
 
                                         if (typeOfEvent.equals("competition")) {
 
+                                            String placeOfEvent = inDsp.child("placeOfEvent").getValue().toString();
                                             String levelOfEvent = inDsp.child("levelOfEvent").getValue().toString();
 
-                                            rating += Integer.parseInt(dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).getValue().toString());
+
+                                            rating += Integer.parseInt(dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).child(placeOfEvent).getValue().toString());
                                         }
 
                                         if (typeOfEvent.equals("mark")){
@@ -281,8 +283,10 @@ public class RateListFragment extends Fragment {
                                         if (typeOfEvent.equals("competition")) {
 
                                             String levelOfEvent = inDsp.child("levelOfEvent").getValue().toString();
+                                            String placeOfEvent = inDsp.child("placeOfEvent").getValue().toString();
 
-                                            rating += Integer.parseInt(dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).getValue().toString());
+
+                                            rating += Integer.parseInt(dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).child(placeOfEvent).getValue().toString());
                                         }
 
                                         if (typeOfEvent.equals("mark")){
@@ -297,7 +301,6 @@ public class RateListFragment extends Fragment {
 
                             mRateList.add(position, new RateItem(dsp.child("name").getValue().toString(),dsp.child("surname").getValue().toString(), String.valueOf(rating), userID));
                             position += 1;
-
                         }
 
 
@@ -365,8 +368,9 @@ public class RateListFragment extends Fragment {
                                         if (typeOfEvent.equals("competition")) {
 
                                             String levelOfEvent = inDsp.child("levelOfEvent").getValue().toString();
+                                            String placeOfEvent = inDsp.child("placeOfEvent").getValue().toString();
 
-                                            rating += Integer.parseInt(dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).getValue().toString());
+                                            rating += Integer.parseInt(dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).child(placeOfEvent).getValue().toString());
                                         }
 
                                         if (typeOfEvent.equals("mark")){
@@ -408,7 +412,6 @@ public class RateListFragment extends Fragment {
 
     private void loadData(){
 
-        //Should clear Recycler view!!!
         mAdapter.clear();
 
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -440,8 +443,9 @@ public class RateListFragment extends Fragment {
                                     if (typeOfEvent.equals("competition")) {
 
                                         String levelOfEvent = inDsp.child("levelOfEvent").getValue().toString();
+                                        String placeOfEvent = inDsp.child("placeOfEvent").getValue().toString();
 
-                                        rating += Integer.parseInt(dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).getValue().toString());
+                                        rating += Integer.parseInt(dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).child(placeOfEvent).getValue().toString());
                                     }
 
 

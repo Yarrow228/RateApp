@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class ProfileItemAdapter extends RecyclerView.Adapter<ProfileItemAdapter.ExampleViewHolder> {
@@ -25,6 +27,8 @@ public class ProfileItemAdapter extends RecyclerView.Adapter<ProfileItemAdapter.
         public TextView mPostTime;
         public TextView mPostTypeOfEvent;
         public TextView mPostLevelOfEvent;
+        public TextView mPostPlaceOfEvent;
+
 
 
         public ExampleViewHolder(@NonNull View itemView) {
@@ -38,6 +42,8 @@ public class ProfileItemAdapter extends RecyclerView.Adapter<ProfileItemAdapter.
             mPostTypeOfEvent = itemView.findViewById(R.id.postMarkOrComp);
             mPostLevelOfEvent = itemView.findViewById(R.id.postLevelOfEvent);
 
+
+            mPostPlaceOfEvent = itemView.findViewById(R.id.postPlaceOfEvent);
         }
     }
 
@@ -64,6 +70,7 @@ public class ProfileItemAdapter extends RecyclerView.Adapter<ProfileItemAdapter.
         holder.mPostTime.setText(currentItem.getmPostTime());
         holder.mPostTypeOfEvent.setText(currentItem.getmPostTypeOfEvent());
         holder.mPostLevelOfEvent.setText(currentItem.getmPostLevelOfEvent());
+        holder.mPostPlaceOfEvent.setText(currentItem.getmPlaceOfEvent());
 
 
         if (currentItem.getmPostConfirm().equals("1")){
@@ -86,28 +93,42 @@ public class ProfileItemAdapter extends RecyclerView.Adapter<ProfileItemAdapter.
 
     private boolean checkDate(String date){
 
-
-        //Check if its confirmed and not out of time
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy");
-        String nowDate = simpleDateFormat.format(new Date()).replace("/",".");
-
         int preLastNum = Character.getNumericValue(date.charAt(date.length()-2));
         int lastNum = Character.getNumericValue(date.charAt(date.length()-1)) + 1;
         int num = preLastNum*10 + lastNum;
 
-        String newDate;
+
+        String valid_until;
         if(num < 10){
-            newDate = date.substring(0, date.length()-1) + String.valueOf(num);
+            valid_until = date.substring(0, date.length()-1) + String.valueOf(num);
         }else{
-            newDate = date.substring(0, date.length()-2) + String.valueOf(num);
+            valid_until = date.substring(0, date.length()-2) + String.valueOf(num);
         }
 
-        if (nowDate.equals(newDate)){
-            return true;
-        }
+        valid_until = valid_until.replace(".","/");
 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+
+
+        try{
+            Date dateOld = sdf.parse(date);
+            Date dateNew = sdf.parse(valid_until);
+
+            if(new Date().after(dateNew)){
+                return true;
+            }
+            return false;
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
         return false;
     }
 
+
+    public void clear(){
+        final int size = mExampleList.size();
+        mExampleList.clear();
+        notifyItemRangeRemoved(0,size);
+    }
 
 }
