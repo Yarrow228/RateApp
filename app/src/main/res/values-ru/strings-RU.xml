@@ -43,6 +43,11 @@
     <string name="new_post_check_item" translatable="false">Item1</string>
     <string name="new_post_back_item" translatable="false">Item2</string>
 
+
+    <string name="rate_list_item_rating">Рейтинг:</string>
+
+
+
     <string-array name="typesOfEvent">
         <item>Выберите тип события</item>
         <item>Соревнования</item>
@@ -64,6 +69,13 @@
         <item>8</item>
         <item>7</item>
         <item>6</item>
+    </string-array>
+
+    <string-array name="placeOfEvent">
+        <item>Выберите место</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
 
 

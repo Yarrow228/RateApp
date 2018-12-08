@@ -75,7 +75,7 @@ public class ProfileItemAdapter extends RecyclerView.Adapter<ProfileItemAdapter.
 
 
         if (currentItem.getmPostConfirm().equals("1")){
-            
+
             holder.mPostMark.setText("+" + currentItem.getmPostMark());
             holder.mPostMark.setTextColor(Color.parseColor("#3F51B5"));
         }

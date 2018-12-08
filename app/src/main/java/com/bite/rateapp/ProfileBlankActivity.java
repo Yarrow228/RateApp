@@ -267,7 +267,6 @@ public class ProfileBlankActivity extends AppCompatActivity {
                 tvRating.setText(String.valueOf(rating));
                 mAdapter.notifyDataSetChanged();
                 mExampleListLen = position;
-                toastMessage(String.valueOf(mExampleListLen));
             }
 
             @Override

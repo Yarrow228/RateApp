@@ -88,7 +88,7 @@
 
                     android:textColor="@android:color/black"
                     android:textSize="15sp"
-                    android:text="Rating: "/>
+                    android:text="@string/rate_list_item_rating"/>
 
                 <TextView
                     android:id="@+id/rate_list_card_rating"

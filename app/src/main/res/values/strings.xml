@@ -41,6 +41,9 @@
     <string name="new_post_check_item" translatable="false">Item1</string>
     <string name="new_post_back_item" translatable="false">Item2</string>
 
+    <string name="rate_list_item_rating">Rating:</string>
+
+
     <string-array name="typesOfEvent">
         <item>Choose type of event</item>
         <item>Competition</item>

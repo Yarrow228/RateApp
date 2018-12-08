@@ -151,7 +151,7 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
                     //startActivity(new Intent(PostActivity.this, MainActivity.class));
                 }else{
-                    toastMessage("Write your comment");
+                    toastMessage("Напишите свой комментарий");
                 }
             case R.id.action_back:
                 startActivity(new Intent(PostActivity.this, MainActivity.class));
