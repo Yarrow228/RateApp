@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -74,6 +75,7 @@ public class ProfileItemAdapter extends RecyclerView.Adapter<ProfileItemAdapter.
 
 
         if (currentItem.getmPostConfirm().equals("1")){
+            
             holder.mPostMark.setText("+" + currentItem.getmPostMark());
             holder.mPostMark.setTextColor(Color.parseColor("#3F51B5"));
         }
@@ -110,17 +112,20 @@ public class ProfileItemAdapter extends RecyclerView.Adapter<ProfileItemAdapter.
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
 
 
+
         try{
             Date dateOld = sdf.parse(date);
             Date dateNew = sdf.parse(valid_until);
 
             if(new Date().after(dateNew)){
+
                 return true;
             }
-            return false;
         }catch(ParseException e){
             e.printStackTrace();
         }
+
+
         return false;
     }
 

@@ -375,15 +375,17 @@ public class ProfileFragment extends Fragment {
                 int position = 0;
                 FirebaseUser user = mAuth.getCurrentUser();
 
-                for(DataSnapshot dsp : dataSnapshot.child("Users").child(user.getUid()).child("achievements").getChildren()){
+                for(DataSnapshot dsp : dataSnapshot.child("Users").child(String.valueOf(user.getUid())).child("achievements").getChildren()){
 
-                    String date = dsp.child("date").getValue().toString();
+                    String date = String.valueOf(dsp.child("date").getValue());
 
                     if(!date.equals("date")) {
 
-                        String typeOfEvent = dsp.child("typeOfEvent").getValue().toString();
-                        String timeOfPost = dsp.child("time").getValue().toString();
-                        String confirm = dsp.child("confirmed").getValue().toString();
+                        //
+                        String typeOfEvent = String.valueOf(dsp.child("typeOfEvent").getValue());
+                        //
+                        String timeOfPost =  String.valueOf(dsp.child("time").getValue());
+                        String confirm =   String.valueOf(dsp.child("confirmed").getValue());
 
                         String[] typesOfEvent = getResources().getStringArray(R.array.typesOfEvent);
                         String[] levelsOfEvent = getResources().getStringArray(R.array.levelOfEvent);
@@ -397,11 +399,9 @@ public class ProfileFragment extends Fragment {
                             type = typesOfEvent[1];
                             String level= "";
 
-                            String levelOfEvent = dsp.child("levelOfEvent").getValue().toString();
-
-                            String placeOfEvent = dsp.child("placeOfEvent").getValue().toString();
-
-                            String reward = dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).child(placeOfEvent).getValue().toString();
+                            String levelOfEvent = String.valueOf(dsp.child("levelOfEvent").getValue());
+                            String placeOfEvent = String.valueOf(dsp.child("placeOfEvent").getValue());
+                            String reward = String.valueOf(dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(levelOfEvent).child(placeOfEvent).getValue());
 
                             //Crutch
                             /*
@@ -419,7 +419,7 @@ public class ProfileFragment extends Fragment {
 
 
 
-                            mExampleList.add(position, new ProfileItem(date, timeOfPost, dsp.child("comment").getValue().toString(), reward, type, levelOfEvent, confirm, placeOfEvent));
+                            mExampleList.add(position, new ProfileItem(date, timeOfPost,  String.valueOf(dsp.child("comment").getValue()), reward, type, levelOfEvent, confirm, placeOfEvent));
                             position += 1;
 
 
@@ -446,8 +446,8 @@ public class ProfileFragment extends Fragment {
 
                         if (typeOfEvent.equals("mark")) {
 
-                            String markOfEvent = dsp.child("markOfEvent").getValue().toString();
-                            String reward = dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(markOfEvent).getValue().toString();
+                            String markOfEvent = String.valueOf(dsp.child("markOfEvent").getValue());
+                            String reward = String.valueOf(dataSnapshot.child("AchievementsTypes").child(typeOfEvent).child(markOfEvent).getValue());
 
 
                             type = typesOfEvent[2];
@@ -459,6 +459,8 @@ public class ProfileFragment extends Fragment {
 
 
                             //Check if its confirmed and not out of time
+
+
                             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy");
                             String nowDate = simpleDateFormat.format(new Date()).replace("/",".");
 
@@ -473,7 +475,7 @@ public class ProfileFragment extends Fragment {
                                 newDate = date.substring(0, date.length()-2) + String.valueOf(num);
                             }
 
-                            if(!nowDate.equals(newDate) && !confirm.equals("0")){
+                            if(!nowDate.equals(newDate) && confirm.equals("1")){
                                 rating += Integer.parseInt(reward);
 
                             }
@@ -540,20 +542,22 @@ public class ProfileFragment extends Fragment {
                         for (DataSnapshot insideDsp : dsp.child("achievements").getChildren()){
 
 
-                            if (!insideDsp.child("date").getValue().toString().equals("date")){
-                                if (insideDsp.child("confirmed").getValue().toString().equals("0")){
+                            if (!String.valueOf(insideDsp.child("date").getValue()).equals("date")){
 
-                                    String name = dsp.child("name").getValue().toString();
-                                    String surname = dsp.child("surname").getValue().toString();
-                                    String date = insideDsp.child("date").getValue().toString();
-                                    String time = insideDsp.child("time").getValue().toString();
-                                    String comment = insideDsp.child("comment").getValue().toString();
-                                    String type = insideDsp.child("typeOfEvent").getValue().toString();
+                                //insideDsp.child("confirmed").getValue().toString()
+                                if (String.valueOf(insideDsp.child("confirmed").getValue()).equals("0")){
+
+                                    String name = String.valueOf(dsp.child("name").getValue());
+                                    String surname = String.valueOf(dsp.child("surname").getValue());
+                                    String date = String.valueOf(insideDsp.child("date").getValue());
+                                    String time = String.valueOf(insideDsp.child("time").getValue());
+                                    String comment = String.valueOf(insideDsp.child("comment").getValue());
+                                    String type = String.valueOf(insideDsp.child("typeOfEvent").getValue());
 
 
                                     if(type.equals("competition")){
 
-                                        String level = insideDsp.child("levelOfEvent").getValue().toString();
+                                        String level = String.valueOf(insideDsp.child("levelOfEvent").getValue());
 
                                         mConfList.add(position, new ConfItem(name, surname, date, time, comment, type, level));
                                         position += 1;
@@ -561,7 +565,7 @@ public class ProfileFragment extends Fragment {
 
                                     if(type.equals("mark")){
 
-                                        String level = insideDsp.child("markOfEvent").getValue().toString();
+                                        String level = String.valueOf(insideDsp.child("markOfEvent").getValue());
                                         mConfList.add(position, new ConfItem(name, surname, date, time, comment, type, level));
                                         position += 1;
                                     }
